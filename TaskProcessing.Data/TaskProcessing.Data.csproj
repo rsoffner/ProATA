@@ -7,15 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Entities\**" />
-    <Compile Remove="Mappings\**" />
-    <EmbeddedResource Remove="Entities\**" />
-    <EmbeddedResource Remove="Mappings\**" />
-    <None Remove="Entities\**" />
-    <None Remove="Mappings\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentNHibernate" Version="3.1.0" />
     <PackageReference Include="NHibernate" Version="5.3.12" />
   </ItemGroup>

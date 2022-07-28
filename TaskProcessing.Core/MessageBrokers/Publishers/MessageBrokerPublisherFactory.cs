@@ -5,7 +5,7 @@ namespace TaskProcessing.Core.MessageBrokers.Publishers
 {
     public static class MessageBrokerPublisherFactory
     {
-        const string brokerConnectionStringRabbitMq = "amqp://SAAPI:SA32api@ap-dev-01/apitaskmanagement.vhost";
+        const string brokerConnectionStringRabbitMq = "amqp://guest:guest@localhost/apitaskmanagement.vhost";
         const string brokerConnectionStringServiceBus = "<Your ServiceBus Connection string>";
         const string titleTopic = "task.events.topic";
 
