@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProATA.SharedKernel.SignalProcessor
 {
-    internal sealed class PublisherRabbitMq<TMessage> : PublisherBase<TMessage>
+    public sealed class PublisherRabbitMq<TMessage> : PublisherBase<TMessage>
     {
         private bool _disposed;
         private readonly IConnection _connection;

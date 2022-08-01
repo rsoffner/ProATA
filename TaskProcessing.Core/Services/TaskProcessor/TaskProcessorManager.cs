@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using TaskProcessing.Core.Contracts;
 using TaskProcessing.Core.Interfaces;
-using TaskProcessing.Core.MessageBrokers.Publishers;
 using TaskProcessing.Core.Models;
 
 namespace TaskProcessing.Core.Services.TaskProcessor
@@ -14,13 +13,13 @@ namespace TaskProcessing.Core.Services.TaskProcessor
     public sealed class TaskProcessorManager : IDisposable
     {
         private bool _disposed;
-        private readonly PublisherBase _messageBrokerPublisher;
+        //private readonly PublisherBase<Message> _messageBrokerPublisher;
+        private readonly SignalProcessorManager _signalProcessorManager;
 
-        public TaskProcessorManager()
+        public TaskProcessorManager(SignalProcessorManager signalProcessorManager)
         {
-            var messageBrokerType = MessageBrokerType.RabbitMq;
-
-            _messageBrokerPublisher = MessageBrokerPublisherFactory.Create(messageBrokerType);
+            // _messageBrokerPublisher = messageBrokerPublisher;
+            _signalProcessorManager = signalProcessorManager;
         }
 
         public async Task RunTask(APITask task)
@@ -43,7 +42,7 @@ namespace TaskProcessing.Core.Services.TaskProcessor
                         var json = JsonSerializer.Serialize(domainEvent);
                         var messageBytes = Encoding.UTF8.GetBytes(json);
                         var message = new Message(messageBytes, Guid.NewGuid().ToString("N"), "application/json");
-                        await _messageBrokerPublisher.Publish(message);
+                        await _signalProcessorManager.PublishMessage(message);
                     }
                 }
             }
@@ -53,7 +52,7 @@ namespace TaskProcessing.Core.Services.TaskProcessor
         {
             if (disposing && !_disposed)
             {
-                _messageBrokerPublisher?.Dispose();
+                _signalProcessorManager?.Dispose();
                 _disposed = true;
             }
         }

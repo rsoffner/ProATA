@@ -53,6 +53,7 @@ try
         });
 
         // Dependency Injection
+        registry.For<PublisherBase<Message>>().Use<PublisherRabbitMq<Message>>();
         registry.ForSingletonOf<SignalProcessorManager>();
         registry.ForSingletonOf<TaskProcessorManager>();
         registry.For<IHandleCommand<V1.Run>>().Use<RunTaskHandler>();

@@ -17,5 +17,10 @@ namespace TaskManager.Hubs
         {
             await _signalProcessorManager.PublishCommandMessage(new CommandMessage(Guid.NewGuid().ToString("N"), taskId, command, DateTime.UtcNow));
         }
+
+        public Task ReceiveMessage(string message)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

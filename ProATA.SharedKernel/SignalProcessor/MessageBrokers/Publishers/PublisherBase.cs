@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProATA.SharedKernel.SignalProcessor
 {
-    internal abstract class PublisherBase<TMessage> : IDisposable
+    public abstract class PublisherBase<TMessage> : IDisposable
     {
         private readonly JsonStringEnumConverter _jsonStringEnumConverter = new JsonStringEnumConverter(namingPolicy: default, allowIntegerValues: false);
         private readonly JsonSerializerOptions _jsonSerializerOptions;

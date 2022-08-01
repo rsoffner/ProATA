@@ -1,6 +1,7 @@
 using Lamar;
 using NUnit.Framework;
 using ProATA.SharedKernel;
+using ProATA.SharedKernel.SignalProcessor;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -46,7 +47,9 @@ namespace TaskProcessing.Test
             var title = "Test";
             var task = new APITask(Guid.NewGuid(), title);
 
-            var taskManager = new TaskProcessorManager();
+            SignalProcessorManager processorManager = new SignalProcessorManager();
+
+            var taskManager = new TaskProcessorManager(processorManager);
             _ = taskManager.RunTask(task);
         }
     }

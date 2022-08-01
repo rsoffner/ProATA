@@ -18,8 +18,11 @@ namespace ProATA.SharedKernel.SignalProcessor
         private MessageBrokerSettings MessageBrokerSettings { get { return _messageBrokerSettings ??= _configurationProvider.GetMessageBrokerSettings(); } }
 
         private PublisherBase<CommandMessage> _publisherCommandMessage;
-        private PublisherBase<CommandMessage> PublisherCommandMessage { get { return _publisherCommandMessage ??= MakePublisherCommandMessage(MessageBrokerSettings, CommandTopicName); } }
+        private PublisherBase<CommandMessage> PublisherCommandMessage { get { return _publisherCommandMessage ??= MakePublisherCommandMessage(MessageBrokerSettings, EventMessageTopicName); } }
 
+        private PublisherBase<Message> _publisherMessage;
+
+        private PublisherBase<Message> PublisherMessage { get { return _publisherMessage ??= MakePublisherMessage(MessageBrokerSettings, EventMessageTopicName);  } }
 
         public SignalProcessorManager()
         {
@@ -70,10 +73,28 @@ namespace ProATA.SharedKernel.SignalProcessor
             };
         }
 
+        public async Task PublishMessage(Message message)
+        {
+            await PublisherMessage.Publish(message, message.MessageId);
+        }
+
+        private static PublisherBase<Message> MakePublisherMessage(MessageBrokerSettings messageBrokerSettings, string orchestrationTopicName)
+        {
+            return messageBrokerSettings.MessageBrokerType switch
+            {
+                MessageBrokerType.RabbitMq => new PublisherRabbitMq<Message>(messageBrokerSettings.MessageBrokerConnectionString, orchestrationTopicName),
+                var mbt when
+                    mbt == MessageBrokerType.ServiceBus ||
+                    mbt == MessageBrokerType.Console => new PublisherServiceBus<Message>(messageBrokerSettings.MessageBrokerConnectionString, orchestrationTopicName),
+                _ => throw new ConfigurationSettingInvalidException($"The Message Broker Type of: {messageBrokerSettings.MessageBrokerType} is not a valid or supported Message Broker Type")
+            };
+        }
+
         public Task StopListening()
         {
             _subscriberEventMessage?.Dispose();
             _subscriberEventMessage = null;
+      
             return Task.CompletedTask;
         }
 
