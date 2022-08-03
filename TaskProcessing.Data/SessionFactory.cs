@@ -19,7 +19,7 @@ namespace TaskProcessing.Data
                            .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString))
                            .Mappings(m => m.FluentMappings
                                 .AddFromAssembly(Assembly.Load("TaskProcessing.Data"))
-                                .AddFromAssembly(Assembly.Load("TaskScheduling.Data"))
+                                // .AddFromAssembly(Assembly.Load("TaskScheduling.Data"))
                            );
 
             _factory = configuration.BuildSessionFactory();

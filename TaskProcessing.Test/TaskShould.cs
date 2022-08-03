@@ -1,11 +1,6 @@
 using Lamar;
 using NUnit.Framework;
-using ProATA.SharedKernel;
-using ProATA.SharedKernel.SignalProcessor;
 using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using TaskProcessing.Core.Interfaces;
 using TaskProcessing.Core.Models;
 using TaskProcessing.Core.Services;
 using TaskProcessing.Core.Services.TaskProcessor;

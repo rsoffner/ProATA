@@ -24,7 +24,16 @@ namespace TaskProcessing.Data.Repositories
             {
                 var task = session.Get<APITaskEntity>(id);
 
-                return new APITask(task.Id, task.Title);
+                if (task != null)
+                {
+                    return new APITask(task.Id, task.Title);
+                }
+                else
+                {
+                    return null;
+                }
+
+                
             }
         }
     }

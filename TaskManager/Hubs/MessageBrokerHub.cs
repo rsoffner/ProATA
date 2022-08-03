@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using ProATA.SharedKernel.Enums;
-using ProATA.SharedKernel.SignalProcessor;
+using TaskProcessing.Core.Services;
 
 namespace TaskManager.Hubs
 {
@@ -16,11 +16,6 @@ namespace TaskManager.Hubs
         public async Task CommandReceived(Guid taskId, TaskCommand command)
         {
             await _signalProcessorManager.PublishCommandMessage(new CommandMessage(Guid.NewGuid().ToString("N"), taskId, command, DateTime.UtcNow));
-        }
-
-        public Task ReceiveMessage(string message)
-        {
-            return Task.CompletedTask;
         }
     }
 }

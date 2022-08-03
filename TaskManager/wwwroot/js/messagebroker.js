@@ -11,8 +11,8 @@ signalrConnection.start().then(function () {
     return console.error(err.toString());
 });
 
-signalrConnection.on("onMessageReceived", function (eventMessage) {
-    console.log(eventMessage);
+signalrConnection.on("onMessageReceived", function (commandMessage) {
+    console.log(commandMessage);
 });
 
 $(document).ready(function() {

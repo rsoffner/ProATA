@@ -1,8 +1,5 @@
 using Lamar.Microsoft.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.Negotiate;
-using ProATA.SharedKernel;
 using ProATA.SharedKernel.Interfaces;
-using ProATA.SharedKernel.SignalProcessor;
 using TaskManager.Hubs;
 using TaskManager.WorkerServices;
 using TaskProcessing.Core.Handlers;
@@ -12,6 +9,7 @@ using TaskProcessing.Data.Repositories;
 using static TaskProcessing.Core.Contracts.Tasks;
 using NLog;
 using NLog.Web;
+using TaskProcessing.Core.Services;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");

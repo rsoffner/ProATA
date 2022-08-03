@@ -1,10 +1,7 @@
-﻿using ProATA.SharedKernel.Interfaces;
-using ProATA.SharedKernel.SignalProcessor;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using TaskProcessing.Core.Contracts;
 using TaskProcessing.Core.Interfaces;
 using TaskProcessing.Core.Models;
 

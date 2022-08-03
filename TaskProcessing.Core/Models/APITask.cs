@@ -1,5 +1,4 @@
 ﻿using ProATA.SharedKernel;
-using ProATA.SharedKernel.SignalProcessor;
 using TaskProcessing.Core.Events;
 using TaskProcessing.Core.Interfaces;
 
@@ -60,27 +59,27 @@ namespace TaskProcessing.Core.Models
 
         public async Task _Run()
         {
-            Events.Add(new EventMessage(this.Id, "Running"));
+            Events.Add(new TaskStateChangedEvent(this.Id, ProATA.SharedKernel.Enums.TaskState.Running));
             await _runStrategy.Run();
          }
 
         public Task _End()
         {
-            Events.Add(new EventMessage(this.Id, "Ready"));
+            Events.Add(new TaskStateChangedEvent(this.Id, ProATA.SharedKernel.Enums.TaskState.Ready));
 
             return Task.CompletedTask;
         }
 
         public Task _Enable()
         {
-            Events.Add(new EventMessage(this.Id, "Enabled"));
+            Events.Add(new TaskStateChangedEvent(this.Id, ProATA.SharedKernel.Enums.TaskState.Ready));
 
             return Task.CompletedTask;
         }
 
         public Task _Disable()
         {
-            Events.Add(new EventMessage(this.Id, "Disabled"));
+            Events.Add(new TaskStateChangedEvent(this.Id, ProATA.SharedKernel.Enums.TaskState.Disabled));
 
             return Task.CompletedTask;
         }

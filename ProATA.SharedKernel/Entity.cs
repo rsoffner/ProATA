@@ -1,8 +1,4 @@
 ﻿using ProATA.SharedKernel.Interfaces;
-using ProATA.SharedKernel.SignalProcessor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ProATA.SharedKernel
 {
@@ -10,7 +6,7 @@ namespace ProATA.SharedKernel
     {
         public TId Id { get; protected set; }
 
-        public ICollection<EventMessage> Events { get; }
+        public ICollection<IDomainEvent> Events { get; }
 
         protected Entity(TId id)
         {
@@ -21,7 +17,7 @@ namespace ProATA.SharedKernel
 
             this.Id = id;
 
-            Events = new List<EventMessage>();
+            Events = new List<IDomainEvent>();
         }
 
         public override bool Equals(object otherObject)
