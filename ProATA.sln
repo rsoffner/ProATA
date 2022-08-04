@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedKernel", "SharedKerne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProATA.SharedKernel", "ProATA.SharedKernel\ProATA.SharedKernel.csproj", "{5FB705DF-252A-4A10-9E2F-400E7A831427}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskProcessing.IntegrationTests", "TaskProcessing.IntegrationTests\TaskProcessing.IntegrationTests.csproj", "{3D375715-108B-4705-BA10-61B87E2CF87D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskProcessing.IntegrationTests", "TaskProcessing.IntegrationTests\TaskProcessing.IntegrationTests.csproj", "{3D375715-108B-4705-BA10-61B87E2CF87D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
