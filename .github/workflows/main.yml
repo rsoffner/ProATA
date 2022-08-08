@@ -7,4 +7,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@1.0.*
+    - name: Set Version
+      run: echo "PACKAGE_VERSION=$(date +'%Y.%m.%d').$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Create artifacts folder
+      run: |
+        mkdir "$GITHUB_WORKSPACE/artifacts"
+        mkdir "$GITHUB_WORKSPACE/artifacts/ProATA.SharedKernel"
+        mkdir "$GITHUB_WORKSPACE/artifacts/TaskProcessing.Data"
+        mkdir "$GITHUB_WORKSPACE/artifacts/TaskProcessing.Core"
+        mkdir "$GITHUB_WORKSPACE/artifacts/TaskManager"
+    - name: Publish ProATASharedKernel
+      run: dotnet publish ProATA.SharedKernel/ProATA.SharedKernel.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/ProATA.SharedKernel"
+    - name: Publish ProATATaskProcessingData
+      run: dotnet publish TaskProcessing.Data/TaskProcessing.Data.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskProcessing.Data"
+    - name: Publish ProATATaskProcessingCore
+      run: dotnet publish TaskProcessing.Core/TaskProcessing.Core.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskProcessing.Core"
+    - name: Publsih ProATATaskManager
+      run: dotnet publish TaskManager/TaskManager.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskManager"
