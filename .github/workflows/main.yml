@@ -5,7 +5,9 @@ on:
   
 jobs:
   build:
+  
     runs-on: ubuntu-latest
+    
     steps:
     - uses: actions/checkout@v2
     - name: Set Version
@@ -33,3 +35,24 @@ jobs:
       run: dotnet publish TaskProcessing.Core/TaskProcessing.Core.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskProcessing.Core"
     - name: Publsih ProATATaskManager
       run: dotnet publish TaskManager/TaskManager.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskManager"
+      
+    - name: Pack ProATASharedKernel
+      run: |
+        dotnet pack ProATA.SharedKernel/ProATA.SharedKernel.csproj --configuration Release --no-build --output "$GITHUB_WORKSPACE/artifacts/ProATA.SharedKernel" -p:PackageVersion=$PACKAGE_VERSION
+    - name: ProATATaskProcessingData
+      run: |
+        dotnet pack TaskProcessing.Data/TaskProcessing.Data.csproj --configuration Release --no-build --output "$GITHUB_WORKSPACE/artifacts/TaskProcessing.Data" -p:PackageVersion=$PACKAGE_VERSION
+    - name: ProATATaskProcessingCore
+      run: |
+        dotnet pack TaskProcessing.Core/TaskProcessing.Core.csproj --configuration Release --no-build --output "$GITHUB_WORKSPACE/artifacts/TaskProcessing.Core" -p:PackageVersion=$PACKAGE_VERSION
+    - name: ProATATaskManager
+      run: |
+        dotnet pack TaskManager/TaskManager.csproj --configuration Release --no-build --output "$GITHUB_WORKSPACE/artifacts/TaskManager" -p:PackageVersion=$PACKAGE_VERSION
+
+    - name: Setup .NET Core for publish
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+    - name: Push packages to GitHub Packages NuGet feed
+      run: |
+        dotnet nuget push "$GITHUB_WORKSPACE/artifacts/ProATA.SharedKernel/ProATA.SharedKernel.$PACKAGE_VERSION.nupkg"  --api-key ${{ secrets.OCTOPUSSERVERAPIKEY }} --source  ${{ secrets.OCTOPUSSERVERURL }}
