@@ -32,4 +32,8 @@
     <ProjectReference Include="..\TaskProcessing.Data\TaskProcessing.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Api\Controllers\" />
+  </ItemGroup>
+
 </Project>
