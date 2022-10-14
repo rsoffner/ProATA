@@ -35,9 +35,9 @@ steps:
     
 - task: OctopusPack@4
   inputs:
-    PackageId: 'ProATA'
+    PackageId: 'API Task Processor'
     PackageFormat: 'NuPkg'
-    PackageVersion: '1.0.$(Build.BuildId)'
+    PackageVersion: '2.0.$(Build.BuildId)'
     SourcePath: '$(build.artifactStagingDirectory)\ProATA'
     
     
