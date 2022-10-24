@@ -45,5 +45,11 @@ jobs:
     - name: Package TaskProcessor
       run: |
         octo pack --id="TaskProcessor" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/TaskProcessor" --outFolder="$GITHUB_WORKSPACE/artifacts"
-      
+    - name: Push ProATA packages
+      uses: OctopusDeploy/push-package-action@v1.1.1
+      with:
+        api_key: ${{ secrets.OCTOPUSSERVERAPIKEY }}
+        server: ${{ secrets.OCTOPUSSERVERURL }}
+        packages: "artifacts/TaskManager.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip"
+        
     
