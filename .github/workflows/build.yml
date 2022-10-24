@@ -35,3 +35,15 @@ jobs:
       run: dotnet publish TaskManager/TaskManager.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskManager"
     - name: Publish TaskProcessor
       run: dotnet publish TaskProcessor/TaskProcessor.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
+    - name: Install Octopus CLI
+      uses: OctopusDeploy/install-octopus-cli-action@v1.1.8
+      with:
+        version: latest
+    - name: Package TaskManager
+      run: |
+        octo pack --id="TaskManager" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/TaskManager" --outFolder="$GITHUB_WORKSPACE/artifacts"
+    - name: Package TaskProcessor
+      run: |
+        octo pack --id="TaskProcessor" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/TaskProcessor" --outFolder="$GITHUB_WORKSPACE/artifacts"
+      
+    
