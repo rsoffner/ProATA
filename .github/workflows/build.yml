@@ -48,8 +48,8 @@ jobs:
     - name: Push ProATA packages
       uses: OctopusDeploy/push-package-action@v1.1.1
       with:
-        api_key: ${{ secrets.OCTOPUSSERVERAPIKEY }}
-        server: ${{ secrets.OCTOPUSSERVERURL }}
+        api_key: ${{ secrets.OCTOPUS_API_TOKEN }}
+        server: ${{ secrets.OCTOPUS_SERVER_URL }}
         packages: "artifacts/TaskManager.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip"
         
     
