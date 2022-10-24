@@ -29,9 +29,9 @@ jobs:
     - name: Create artifacts folder
       run: |
         mkdir "$GITHUB_WORKSPACE/artifacts"
-        mkdir "$GITHUB_WORKSPACE/artifacts/ProATA.TaskManager"
-        mkdir "$GITHUB_WORKSPACE/artifacts/ProATA.TaskProcessor"
+        mkdir "$GITHUB_WORKSPACE/artifacts/TaskManager"
+        mkdir "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
     - name: Publish TaskManager
-      run: dotnet publish ProATA.TaskManager/TaskManager.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/ProATA.TaskManager"
+      run: dotnet publish TaskManager/TaskManager.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskManager"
     - name: Publish TaskProcessor
-      run: dotnet publish ProATA.TaskProcessor/TaskProcessor.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/ProATA.TaskProcessor"
+      run: dotnet publish TaskProcessor/TaskProcessor.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
