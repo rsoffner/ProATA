@@ -12,7 +12,7 @@ namespace TaskProcessing.Core.Models
         internal TaskState _currentState;
         internal IRunStrategy _runStrategy;
 
-        public APITask(Guid id, string title, bool enabled) : base(id)
+        public APITask(Guid id, string title, bool enabled = false) : base(id)
         {
             Id = id;    
             Title = title;
