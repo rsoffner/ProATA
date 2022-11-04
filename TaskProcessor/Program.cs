@@ -24,7 +24,7 @@ try
             registry.For<IScopedMessageBrokerWorker>().Use<ScopedMessageBrokerWorker>();
             registry.ForSingletonOf<TaskProcessorManager>();
             registry.For<IHandleCommand<V1.Run>>().Use<RunTaskHandler>();
-            registry.For<ITaskRepository>().Use<SqlTaskRepository>();
+            registry.For<ITaskRepository>().Use<GraphQLTaskRepository>();
             registry.Scan(_ =>
             {
                 _.Assembly("ProATA.SharedKernel");

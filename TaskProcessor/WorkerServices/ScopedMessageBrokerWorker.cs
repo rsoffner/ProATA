@@ -35,7 +35,7 @@ namespace TaskProcessor.WorkerServices
 
                     if (commandMessage != null)
                     {
-                        var task = _taskRepository.GetTask(commandMessage.TaskId);
+                        var task = await _taskRepository.GetTask(commandMessage.TaskId, stoppingToken);
                         if (task != null)
                         {
                             switch (commandMessage.Command)

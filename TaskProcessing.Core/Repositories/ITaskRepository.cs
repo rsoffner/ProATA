@@ -4,6 +4,6 @@ namespace TaskProcessing.Core.Repositories
 {
     public interface ITaskRepository
     {
-        APITask GetTask(Guid id);
+        Task<APITask> GetTask(Guid id, CancellationToken cancellationToken = default);
     }
 }

@@ -6,15 +6,17 @@ namespace TaskProcessing.Core.Models
 {
     public sealed class APITask : Entity<Guid>
     {
-         public string Title { get; set; }
+        public string Title { get; set; }
+        public bool Enabled { get; set; }
 
         internal TaskState _currentState;
         internal IRunStrategy _runStrategy;
 
-        public APITask(Guid id, string title) : base(id)
+        public APITask(Guid id, string title, bool enabled) : base(id)
         {
             Id = id;    
             Title = title;
+            Enabled = enabled;
 
             _currentState = new ReadyState(this);
         }

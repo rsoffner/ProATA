@@ -18,15 +18,15 @@ namespace TaskProcessing.Data.Repositories
             _connectionString = _configuration.GetConnectionString("db1");
         }
 
-        public APITask GetTask(Guid id)
+        public async Task<APITask> GetTask(Guid id, CancellationToken cancellationToken = default)
         {
             using (ISession session = SessionFactory.GetNewSession(_connectionString))
             {
-                var task = session.Get<APITaskEntity>(id);
+                var task = await session.GetAsync<APITaskDto>(id);
 
                 if (task != null)
                 {
-                    return new APITask(task.Id, task.Title);
+                    return new APITask(task.Id, task.Title, task.Enabled);
                 }
                 else
                 {

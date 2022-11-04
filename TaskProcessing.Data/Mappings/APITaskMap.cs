@@ -3,7 +3,7 @@ using TaskProcessing.Data.Entities;
 
 namespace TaskProcessing.Data.Mappings
 {
-    public class APITaskMap : ClassMap<APITaskEntity>
+    public class APITaskMap : ClassMap<APITaskDto>
     {
         public APITaskMap()
         {

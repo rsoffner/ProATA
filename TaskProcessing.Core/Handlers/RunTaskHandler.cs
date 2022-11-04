@@ -19,7 +19,7 @@ namespace TaskProcessing.Core.Handlers
         
         public async Task Handle(Tasks.V1.Run command)
         {
-            APITask task = _taskRepository.GetTask(command.Id);
+            APITask task = await _taskRepository.GetTask(command.Id);
 
             await _taskProcessorManager.RunTask(task);
         }
