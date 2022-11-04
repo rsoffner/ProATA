@@ -16,7 +16,7 @@ namespace TaskProcessing.IntegrationTests.Data
         [Test]
         public void ReturnTask()
         {
-            var repo = new TaskRepository(_configuration);
+            var repo = new SqlTaskRepository(_configuration);
             Assert.IsNotNull(repo.GetTask(new Guid("4A652603-5AB5-403A-872D-ACEC009EE43F")));
         }
 

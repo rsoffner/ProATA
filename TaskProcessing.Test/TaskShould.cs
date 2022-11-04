@@ -1,4 +1,5 @@
 using Lamar;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using System;
 using TaskProcessing.Core.Models;
@@ -13,9 +14,12 @@ namespace TaskProcessing.Test
     public class TaskShould
     {
         private readonly IContainer _container;
+        private IConfiguration _configuration;
 
         public TaskShould()
         {
+            _configuration = InitConfiguration();
+
             var registry = new ProATARegistry();
 
             _container = new Container(registry);
@@ -27,7 +31,7 @@ namespace TaskProcessing.Test
         [Test]
         public void TaskShouldNotRun()
         {
-            var runStrategy = new TaskProcessing.Core.Strategies.Test();
+            var runStrategy = new TaskProcessing.Core.Strategies.NewTask();
 
             var task = new APITask(Guid.NewGuid(), "Test");
 
@@ -42,10 +46,17 @@ namespace TaskProcessing.Test
             var title = "Test";
             var task = new APITask(Guid.NewGuid(), title);
 
-            SignalProcessorManager processorManager = new SignalProcessorManager();
-
-            var taskManager = new TaskProcessorManager(processorManager);
+            var taskManager = new TaskProcessorManager(_configuration);
             _ = taskManager.RunTask(task);
+        }
+
+        private static IConfiguration InitConfiguration()
+        {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            return config;
         }
     }
 }
