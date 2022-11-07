@@ -4,7 +4,7 @@
         processing: true,
         select: "single",
         ajax: {
-            url: 'https://localhost:7173/graphql',
+            url: endpointUrl,
             type: 'POST',
             contentType: 'application/json',
             data: function (d) {

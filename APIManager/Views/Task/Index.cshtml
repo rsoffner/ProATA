@@ -56,7 +56,12 @@
 </div><!-- container -->
 
 @section scripts{
+    @using Microsoft.Extensions.Configuration
+    @inject IConfiguration Configuration
     <!-- Required datatable js -->
     <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
+    <script>
+        const endpointUrl = @Configuration["AppSettings:EndpointUrl"];
+    </script>
     <script src="~/js/apps/tasks/index.js"></script>
 }
