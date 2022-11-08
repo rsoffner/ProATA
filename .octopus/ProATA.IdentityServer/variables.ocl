@@ -34,8 +34,4 @@ variable "Project.Web.Certificate" {
     value "Certificates-41" {
         environment = ["test"]
     }
-
-    value "Certificates-21" {
-        environment = ["production"]
-    }
 }
