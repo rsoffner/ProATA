@@ -35,3 +35,11 @@ variable "Certificate" {
         environment = ["test"]
     }
 }
+
+variable "Project.Web.Certificate" {
+    type = "Certificate"
+
+    value "Certificates-41" {
+        environment = ["test"]
+    }
+}
