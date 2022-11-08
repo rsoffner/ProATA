@@ -1,0 +1,9 @@
+variable "ConnectionStrings:DefaultConnection" {
+    value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["test"]
+    }
+
+    value "data source=DB-EEK-02;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["production"]
+    }
+}
