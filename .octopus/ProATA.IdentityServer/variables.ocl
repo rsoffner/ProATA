@@ -17,3 +17,9 @@ variable "IISHostname" {
         environment = ["production"]
     }
 }
+
+variable "IISPort" {
+    value "443" {
+        environment = ["test", "production"]
+    }
+}
