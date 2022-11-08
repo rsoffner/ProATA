@@ -7,3 +7,13 @@ variable "ConnectionStrings:DefaultConnection" {
         environment = ["production"]
     }
 }
+
+variable "IISHostname" {
+    value "testidentityserver.zwd.deeekhoorn.com" {
+        environment = ["test"]
+    }
+
+    value "identityserver.dutchfurniturefulfilment.nl" {
+        environment = ["production"]
+    }
+}
