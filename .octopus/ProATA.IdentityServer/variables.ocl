@@ -27,11 +27,3 @@ variable "IISPort" {
 variable "AppSettings:EnvironmentName" {
     value "#{Octopus.Environment.Name}" {}
 }
-
-variable "Project.Web.Certificate" {
-    type = "Certificate"
-
-    value "Certificates-41" {
-        environment = ["test"]
-    }
-}
