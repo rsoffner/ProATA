@@ -23,3 +23,7 @@ variable "IISPort" {
         environment = ["test", "production"]
     }
 }
+
+variable "AppSettings:EnvironmentName" {
+    value "#{Octopus.Environment.Name}" {}
+}
