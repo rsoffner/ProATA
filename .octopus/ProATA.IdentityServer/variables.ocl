@@ -28,14 +28,6 @@ variable "AppSettings:EnvironmentName" {
     value "#{Octopus.Environment.Name}" {}
 }
 
-variable "Certificate" {
-    type = "Certificate"
-
-    value "Certificates-41" {
-        environment = ["test"]
-    }
-}
-
 variable "Project.Web.Certificate" {
     type = "Certificate"
 
