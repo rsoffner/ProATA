@@ -31,10 +31,13 @@ jobs:
         mkdir "$GITHUB_WORKSPACE/artifacts"
         mkdir "$GITHUB_WORKSPACE/artifacts/APIManager"
         mkdir "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
+        mkdir "$GITHUB_WORKSPACE/artifacts/ProATA.IdentityServer"
     - name: Publish APIManager
       run: dotnet publish APIManager/APIManager.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/APIManager"
     - name: Publish TaskProcessor
       run: dotnet publish TaskProcessor/TaskProcessor.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
+    - name: Publish ProATA.IdentityServer
+      run: dotnet publish ProATA.IdentityServer/ProATA.IdentityServer.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/ProATA.IdentityServer"
     - name: Install Octopus CLI
       uses: OctopusDeploy/install-octopus-cli-action@v1.1.8
       with:
@@ -45,11 +48,14 @@ jobs:
     - name: Package TaskProcessor
       run: |
         octo pack --id="TaskProcessor" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/TaskProcessor" --outFolder="$GITHUB_WORKSPACE/artifacts"
+    - name: Package ProATA.IdentityServer
+      run: |
+        octo pack --id="ProATA.IdentityServer" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/ProATA.IdentityServer" --outFolder="$GITHUB_WORKSPACE/artifacts"
     - name: Push ProATA packages
       uses: OctopusDeploy/push-package-action@v1.1.1
       with:
         api_key: ${{ secrets.OCTOPUS_API_TOKEN }}
         server: ${{ secrets.OCTOPUS_SERVER_URL }}
-        packages: "artifacts/APIManager.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip"
+        packages: "artifacts/APIManager.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip,artifacts/ProATA.IdentityServer.${{ env.PACKAGE_VERSION }}.zip"
         
     
