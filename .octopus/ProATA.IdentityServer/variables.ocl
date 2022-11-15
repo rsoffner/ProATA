@@ -124,3 +124,13 @@ variable "CertThumbprint" {
         environment = ["test"]
     }
 }
+
+variable "AdminConfiguration:IdentityAdminBaseUrl" {
+    value "https://identityserveradmin.dutchfurniturefulfilment.nl" {
+        environment = ["production"]
+    }
+
+    value "https://testidentityserveradmin.zwd.deeekhoorn.com" {
+        environment = ["test"]
+    }
+}
