@@ -13,3 +13,19 @@ step "deploy-to-iis" {
         worker_pool_variable = ""
     }
 }
+
+step "deploy-identity-server-admin" {
+    condition = "Always"
+    name = "Deploy Identity Server Admin"
+    properties = {
+        Octopus.Action.TargetRoles = "Web Server"
+    }
+
+    action {
+        properties = {
+            Octopus.Action.Template.Id = "ActionTemplates-1"
+            Octopus.Action.Template.Version = "1"
+        }
+        worker_pool_variable = ""
+    }
+}
