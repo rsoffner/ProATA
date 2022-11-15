@@ -1,23 +1,3 @@
-variable "ConnectionStrings:DefaultConnection" {
-    value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
-        environment = ["test"]
-    }
-
-    value "data source=DB-EEK-02;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
-        environment = ["production"]
-    }
-}
-
-variable "IISHostname" {
-    value "testidentityserver.zwd.deeekhoorn.com" {
-        environment = ["test"]
-    }
-
-    value "identityserver.dutchfurniturefulfilment.nl" {
-        environment = ["production"]
-    }
-}
-
 variable "IISPort" {
     value "443" {
         environment = ["test", "production"]
@@ -32,6 +12,77 @@ variable "Project.Web.Certificate" {
     type = "Certificate"
 
     value "Certificates-41" {
+        environment = ["test"]
+    }
+}
+
+variable "ConnectionStrings:ConfigurationDbConnection" {
+    value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["test"]
+    }
+
+    value "data source=DB-EEK-02;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        description = ""
+        environment = ["production"]
+    }
+}
+
+variable "ConnectionStrings:PersistedGrantDbConnection" {
+    value "data source=DB-EEK-02;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["production"]
+    }
+
+    value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["test"]
+    }
+}
+
+variable "ConnectionStrings:IdentityDbConnection" {
+    value "data source=DB-EEK-02;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["production"]
+    }
+
+    value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["test"]
+    }
+}
+
+variable "ConnectionStrings:AdminLogDbConnection" {
+    value "data source=DB-EEK-02;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["production"]
+    }
+
+    value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["test"]
+    }
+}
+
+variable "ConnectionStrings:AdminAuditLogDbConnection" {
+    value "data source=DB-EEK-02;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["production"]
+    }
+
+    value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["test"]
+    }
+}
+
+variable "ConnectionStrings:DataProtectionDbConnection" {
+    value "data source=DB-EEK-02;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["production"]
+    }
+
+    value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["test"]
+    }
+}
+
+variable "IdentityServerHostname" {
+    value "identityserver.dutchfurniturefulfilment.nl" {
+        environment = ["production"]
+    }
+
+    value "testidentityserver.zwd.deeekhoorn.com" {
         environment = ["test"]
     }
 }
