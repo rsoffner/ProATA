@@ -5,39 +5,11 @@ step "deploy-to-iis" {
     }
 
     action {
-        action_type = "Octopus.IIS"
         is_required = true
         properties = {
-            Octopus.Action.EnabledFeatures = "Octopus.Features.IISWebSite,Octopus.Features.JsonConfigurationVariables"
-            Octopus.Action.IISWebSite.ApplicationPoolFrameworkVersion = "v4.0"
-            Octopus.Action.IISWebSite.ApplicationPoolIdentityType = "ApplicationPoolIdentity"
-            Octopus.Action.IISWebSite.ApplicationPoolName = "API Identity Server"
-            Octopus.Action.IISWebSite.Bindings = "[{\"protocol\":\"https\",\"ipAddress\":\"*\",\"port\":\"#{IISPort}\",\"host\":\"#{IISHostname}\",\"thumbprint\":\"#{CertThumbprint}\",\"certificateVariable\":null,\"requireSni\":\"False\",\"enabled\":\"True\"}]"
-            Octopus.Action.IISWebSite.CreateOrUpdateWebSite = "True"
-            Octopus.Action.IISWebSite.DeploymentType = "webSite"
-            Octopus.Action.IISWebSite.EnableAnonymousAuthentication = "True"
-            Octopus.Action.IISWebSite.EnableBasicAuthentication = "False"
-            Octopus.Action.IISWebSite.EnableWindowsAuthentication = "False"
-            Octopus.Action.IISWebSite.StartApplicationPool = "True"
-            Octopus.Action.IISWebSite.StartWebSite = "True"
-            Octopus.Action.IISWebSite.WebApplication.ApplicationPoolFrameworkVersion = "v4.0"
-            Octopus.Action.IISWebSite.WebApplication.ApplicationPoolIdentityType = "ApplicationPoolIdentity"
-            Octopus.Action.IISWebSite.WebRootType = "packageRoot"
-            Octopus.Action.IISWebSite.WebSiteName = "API Identity Server"
-            Octopus.Action.Package.DownloadOnTentacle = "False"
-            Octopus.Action.Package.FeedId = "octopus-server-built-in"
-            Octopus.Action.Package.JsonConfigurationVariablesTargets = "appsettings.json"
-            Octopus.Action.Package.PackageId = "IdentityServer.STS.Identity"
+            Octopus.Action.Template.Id = "ActionTemplates-1"
+            Octopus.Action.Template.Version = "0"
         }
         worker_pool_variable = ""
-
-        packages {
-            acquisition_location = "Server"
-            feed = "octopus-server-built-in"
-            package_id = "IdentityServer.STS.Identity"
-            properties = {
-                SelectionMode = "immediate"
-            }
-        }
     }
 }
