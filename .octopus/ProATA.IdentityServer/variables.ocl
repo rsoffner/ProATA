@@ -86,3 +86,43 @@ variable "IdentityServerHostname" {
         environment = ["test"]
     }
 }
+
+variable "AdminConfiguration:IdentityAdminRedirectUri" {
+    value "https://identityserveradmin.dutchfurniturefulfilment.nl" {
+        environment = ["production"]
+    }
+
+    value "https://testidentityserveradmin.zwd.deeekhoorn.com" {
+        environment = ["test"]
+    }
+}
+
+variable "AdminConfiguration:IdentityServerBaseUrl" {
+    value "https://identityserver.dutchfurniturefulfilment.nl" {
+        environment = ["production"]
+    }
+
+    value "https://testidentityserver.zwd.deeekhoorn.com" {
+        environment = ["test"]
+    }
+}
+
+variable "IdentityServerAdminHostname" {
+    value "identityserveradmin.dutchfurniturefulfilment.nl" {
+        environment = ["production"]
+    }
+
+    value "testidentityserveradmin.zwd.deeekhoorn.com" {
+        environment = ["test"]
+    }
+}
+
+variable "AdminConfiguration:PageTitle" {
+    value "De Eekhoorn Identity Server" {
+        environment = ["production"]
+    }
+
+    value "De Eekhoorn Identity Server (TEST)" {
+        environment = ["test"]
+    }
+}
