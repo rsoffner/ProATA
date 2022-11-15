@@ -1,5 +1,5 @@
 step "deploy-to-iis" {
-    name = "Deploy to IIS"
+    name = "Deploy Identity Server"
     properties = {
         Octopus.Action.TargetRoles = "Web Server"
     }
@@ -22,10 +22,39 @@ step "deploy-identity-server-admin" {
     }
 
     action {
+        action_type = "Octopus.IIS"
+        environments = ["test", "production"]
         properties = {
-            Octopus.Action.Template.Id = "ActionTemplates-1"
-            Octopus.Action.Template.Version = "1"
+            Octopus.Action.EnabledFeatures = "Octopus.Features.IISWebSite,Octopus.Features.JsonConfigurationVariables"
+            Octopus.Action.IISWebSite.ApplicationPoolFrameworkVersion = "v4.0"
+            Octopus.Action.IISWebSite.ApplicationPoolIdentityType = "ApplicationPoolIdentity"
+            Octopus.Action.IISWebSite.ApplicationPoolName = "Identity Server Admin"
+            Octopus.Action.IISWebSite.Bindings = "[{\"protocol\":\"https\",\"ipAddress\":\"*\",\"port\":\"#{IISPort}\",\"host\":\"#{IdentityServerAdminHostname}\",\"thumbprint\":\"#{CertThumbprint}\",\"certificateVariable\":null,\"requireSni\":\"False\",\"enabled\":\"True\"}]"
+            Octopus.Action.IISWebSite.CreateOrUpdateWebSite = "True"
+            Octopus.Action.IISWebSite.DeploymentType = "webSite"
+            Octopus.Action.IISWebSite.EnableAnonymousAuthentication = "True"
+            Octopus.Action.IISWebSite.EnableBasicAuthentication = "False"
+            Octopus.Action.IISWebSite.EnableWindowsAuthentication = "False"
+            Octopus.Action.IISWebSite.StartApplicationPool = "True"
+            Octopus.Action.IISWebSite.StartWebSite = "True"
+            Octopus.Action.IISWebSite.WebApplication.ApplicationPoolFrameworkVersion = "v4.0"
+            Octopus.Action.IISWebSite.WebApplication.ApplicationPoolIdentityType = "ApplicationPoolIdentity"
+            Octopus.Action.IISWebSite.WebRootType = "packageRoot"
+            Octopus.Action.IISWebSite.WebSiteName = "Identity Server Admin"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.JsonConfigurationVariablesTargets = "appsettings.json"
+            Octopus.Action.Package.PackageId = "IdentityServer.Admin"
         }
         worker_pool_variable = ""
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "IdentityServer.Admin"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
     }
 }
