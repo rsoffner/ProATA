@@ -79,16 +79,6 @@ variable "IdentityServerHostname" {
     }
 }
 
-variable "AdminConfiguration:IdentityAdminRedirectUri" {
-    value "https://identityserveradmin.dutchfurniturefulfilment.nl" {
-        environment = ["production"]
-    }
-
-    value "https://testidentityserveradmin.zwd.deeekhoorn.com" {
-        environment = ["test"]
-    }
-}
-
 variable "AdminConfiguration:IdentityServerBaseUrl" {
     value "https://identityserver.dutchfurniturefulfilment.nl" {
         environment = ["production"]
@@ -131,6 +121,28 @@ variable "AdminConfiguration:IdentityAdminBaseUrl" {
     }
 
     value "https://testidentityserveradmin.zwd.deeekhoorn.com" {
+        environment = ["test"]
+    }
+}
+
+variable "DatabaseMigrationsConfiguration:ApplyDatabaseMigrations" {
+    value "false" {
+        environment = ["test", "production"]
+    }
+}
+
+variable "SeedConfiguration:ApplySeed" {
+    value "false" {
+        environment = ["test", "production"]
+    }
+}
+
+variable "AdminConfiguration:IdentityAdminRedirectUri" {
+    value "https://identityserveradmin.dutchfurniturefulfilment.nl/signin-oidc" {
+        environment = ["production"]
+    }
+
+    value "https://testidentityserveradmin.zwd.deeekhoorn.com/signin-oidc" {
         environment = ["test"]
     }
 }
