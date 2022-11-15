@@ -38,9 +38,9 @@ jobs:
     - name: Publish TaskProcessor
       run: dotnet publish TaskProcessor/TaskProcessor.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
     - name: Publish IdentityServer.Admin
-      run: dotnet publish IdentityServer/IdentityServer.Admin/IdentityServer.Admin.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/IdentityServer.Admin"
+      run: dotnet publish IdentityServer/src/IdentityServer.Admin/IdentityServer.Admin.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/IdentityServer.Admin"
     - name: Publish IdentityServer.STS.Identity
-      run: dotnet publish IdentityServer/IdentityServer.STS.Identity/IdentityServer.STS.Identity.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/IdentityServer.STS.Identity"
+      run: dotnet publish IdentityServer/src/IdentityServer.STS.Identity/IdentityServer.STS.Identity.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/IdentityServer.STS.Identity"
     - name: Install Octopus CLI
       uses: OctopusDeploy/install-octopus-cli-action@v1.1.8
       with:
