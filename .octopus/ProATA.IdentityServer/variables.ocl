@@ -1,0 +1,37 @@
+variable "ConnectionStrings:DefaultConnection" {
+    value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["test"]
+    }
+
+    value "data source=DB-EEK-02;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
+        environment = ["production"]
+    }
+}
+
+variable "IISHostname" {
+    value "testidentityserver.zwd.deeekhoorn.com" {
+        environment = ["test"]
+    }
+
+    value "identityserver.dutchfurniturefulfilment.nl" {
+        environment = ["production"]
+    }
+}
+
+variable "IISPort" {
+    value "443" {
+        environment = ["test", "production"]
+    }
+}
+
+variable "AppSettings:EnvironmentName" {
+    value "#{Octopus.Environment.Name}" {}
+}
+
+variable "Project.Web.Certificate" {
+    type = "Certificate"
+
+    value "Certificates-41" {
+        environment = ["test"]
+    }
+}
