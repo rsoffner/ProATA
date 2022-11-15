@@ -12,7 +12,7 @@ step "deploy-to-iis" {
             Octopus.Action.IISWebSite.ApplicationPoolFrameworkVersion = "v4.0"
             Octopus.Action.IISWebSite.ApplicationPoolIdentityType = "ApplicationPoolIdentity"
             Octopus.Action.IISWebSite.ApplicationPoolName = "API Identity Server"
-            Octopus.Action.IISWebSite.Bindings = "[{\"protocol\":\"https\",\"ipAddress\":\"*\",\"port\":\"#{IISPort}\",\"host\":\"#{IISHostname}\",\"thumbprint\":\"03da7228c2b131707ccd5c0909c6994f45cd616c\",\"certificateVariable\":null,\"requireSni\":\"False\",\"enabled\":\"True\"}]"
+            Octopus.Action.IISWebSite.Bindings = "[{\"protocol\":\"https\",\"ipAddress\":\"*\",\"port\":\"#{IISPort}\",\"host\":\"#{IISHostname}\",\"thumbprint\":\"#{CertThumbprint}\",\"certificateVariable\":null,\"requireSni\":\"False\",\"enabled\":\"True\"}]"
             Octopus.Action.IISWebSite.CreateOrUpdateWebSite = "True"
             Octopus.Action.IISWebSite.DeploymentType = "webSite"
             Octopus.Action.IISWebSite.EnableAnonymousAuthentication = "True"
@@ -27,14 +27,14 @@ step "deploy-to-iis" {
             Octopus.Action.Package.DownloadOnTentacle = "False"
             Octopus.Action.Package.FeedId = "octopus-server-built-in"
             Octopus.Action.Package.JsonConfigurationVariablesTargets = "appsettings.json"
-            Octopus.Action.Package.PackageId = "ProATA.IdentityServer"
+            Octopus.Action.Package.PackageId = "IdentityServer.STS.Identity"
         }
         worker_pool_variable = ""
 
         packages {
             acquisition_location = "Server"
             feed = "octopus-server-built-in"
-            package_id = "ProATA.IdentityServer"
+            package_id = "IdentityServer.STS.Identity"
             properties = {
                 SelectionMode = "immediate"
             }
