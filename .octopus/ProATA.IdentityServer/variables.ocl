@@ -8,14 +8,6 @@ variable "AppSettings:EnvironmentName" {
     value "#{Octopus.Environment.Name}" {}
 }
 
-variable "Project.Web.Certificate" {
-    type = "Certificate"
-
-    value "Certificates-41" {
-        environment = ["test"]
-    }
-}
-
 variable "ConnectionStrings:ConfigurationDbConnection" {
     value "data source=SRV-EEK-ZWD-07;initial catalog=ATAPro;persist security info=True;user id=SAAPI;password=SA32api" {
         environment = ["test"]
@@ -123,6 +115,12 @@ variable "AdminConfiguration:PageTitle" {
     }
 
     value "De Eekhoorn Identity Server (TEST)" {
+        environment = ["test"]
+    }
+}
+
+variable "CertThumbprint" {
+    value "03da7228c2b131707ccd5c0909c6994f45cd616c" {
         environment = ["test"]
     }
 }
