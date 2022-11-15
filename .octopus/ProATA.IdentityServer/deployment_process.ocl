@@ -8,7 +8,7 @@ step "deploy-to-iis" {
         is_required = true
         properties = {
             Octopus.Action.Template.Id = "ActionTemplates-1"
-            Octopus.Action.Template.Version = "1"
+            Octopus.Action.Template.Version = "2"
         }
         worker_pool_variable = ""
     }
