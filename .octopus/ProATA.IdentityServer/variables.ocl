@@ -146,24 +146,3 @@ variable "AdminConfiguration:IdentityAdminRedirectUri" {
         environment = ["test"]
     }
 }
-
-variable "IdentityServerData:Clients:RedirectUris" {
-    value "https://testidentityserveradmin.zwd.deeekhoorn.com/signin-oidc" {
-        environment = ["test"]
-    }
-
-    value "https://identityserveradmin.deeekhoorn.com/signin-oidc" {
-        description = ""
-    }
-}
-
-variable "IdentityServerData:Clients:ClientUri" {
-    value "https://testidentityserveradmin.zwd.deeekhoorn.com" {
-        environment = ["test"]
-    }
-
-    value "https://identityserveradmin.zwd.deeekhoorn.com" {
-        description = ""
-        environment = ["production"]
-    }
-}
