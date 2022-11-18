@@ -43,7 +43,7 @@ step "deploy-identity-server-admin" {
             Octopus.Action.IISWebSite.WebSiteName = "Identity Server Admin"
             Octopus.Action.Package.DownloadOnTentacle = "False"
             Octopus.Action.Package.FeedId = "octopus-server-built-in"
-            Octopus.Action.Package.JsonConfigurationVariablesTargets = "appsettings.json"
+            Octopus.Action.Package.JsonConfigurationVariablesTargets = "appsettings.json,identityserverdata.json"
             Octopus.Action.Package.PackageId = "IdentityServer.Admin"
         }
         worker_pool_variable = ""
