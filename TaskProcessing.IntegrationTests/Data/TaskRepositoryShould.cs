@@ -54,9 +54,9 @@ namespace TaskProcessing.IntegrationTests.Data
 
             var task = repo.GetTask(new Guid("4A652603-5AB5-403A-872D-ACEC009EE43F"));
 
-            var response = task.Result;
+            var response = task;
             
-            Assert.IsNotNull(task.Result);
+            Assert.IsNotNull(task);
         }
 
         private static IConfiguration InitConfiguration()

@@ -1,69 +1,51 @@
-﻿@section styles{
-    <!-- DataTables -->
-    <link href="~/lib/datatables/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/lib/datatables/buttons.bootstrap5.min.css" rel="stylesheet" type="text/css" />
+﻿@model ApiManager.Models.MonitorViewModel
+
+@{
+    ViewData["Title"] = "Monitor";
 }
 
-<div class="container-fluid">
-    <!-- Page-Title -->
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="page-title-box">
-                <div class="row">
-                    <div class="col">
-                        <h4 class="page-title">API Tasks</h4>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">API Manager</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Monitor</a></li>
-                            <li class="breadcrumb-item active">Tasks</li>
-                        </ol>
-                    </div><!--end col-->
-                    <div class="col-auto align-self-center">
-                        <a href="#" class="btn btn-sm btn-outline-primary" id="Dash_Date">
-                            <span class="day-name" id="Day_Name">Today:</span>&nbsp;
-                            <span class="" id="Select_date">Jan 11</span>
-                            <i data-feather="calendar" class="align-self-center icon-xs ms-1"></i>
-                        </a>
-                        <a href="#" class="btn btn-sm btn-outline-primary">
-                            <i data-feather="download" class="align-self-center icon-xs"></i>
-                        </a>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end page-title-box-->
-        </div><!--end col-->
-    </div><!--end row-->
-    <!-- end page title end breadcrumb -->
-    <div class="row">
-        <div class="col-12">
-            <div class="table-responsive">
-                <table id="datatable" class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Task</th>
-                            <th>Enabled</th>
-                            <th>#Queued</th>
-                            <th>Last Run Time</th>
-                            <th>Last Run Result</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div> <!-- end col -->
-    </div> <!-- end row -->
+@section styles {
+        <link rel="stylesheet" href="~/assets/plugins/custom/datatables/datatables.bundle.css" />
+}
 
-</div><!-- container -->
+<!--begin::Card-->
+<div class="card">
+    <!--begin::Card header-->
+    <div class="card-header border-0 pt-6">
+        <div class="card-title">
 
-
+        </div>
+        <div class="card-toolbar">
+            <label for="hostName" class="visually-hidden">Hostname</label>
+            <select class="form-select form-select-solid fw-bold" asp-for="SchedulerId" asp-items="Model.Schedulers" data-monitor-table-filter="scheduler" data-hide-search="true"></select>
+        </div>
+    </div>
+    <!--end::Card header-->
+    <!--begin::Card body-->
+    <div class="card-body py-4">
+        <!--begin::Table-->
+        <table class="table align-middle table-row-dashed fs-6 gy-5" id="taskTable">
+            <!--begin::Table head-->
+            <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                <th>Task</th>
+                <th>Enabled</th>
+                <th>#Queued</th>
+                <th>Last Run Time</th>
+                <th>Last Run Result</th>
+                <th>Actions</th>
+            </tr>
+            <!--end::Table head-->
+        </table>
+        <!--end::Table-->
+    </div>
+    <!--end::Card body-->
+</div>
+<!--end::Card-->
 
 @section scripts{
-    @using Microsoft.Extensions.Configuration
-    @inject IConfiguration Configuration
-    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-    <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
-    <script>
-        const endpointUrl = '@Configuration["AppSettings:EndpointUrl"]';
-    </script>
+    <!-- Required datatable js -->
+    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
 
-    <script src="~/js/apps/monitor/index.js"></script>
+    <script src="~/assets//plugins/custom/signalr/signalr.bundle.js"></script>
+    <script src="~/assets/js/custom/apps/monitor/list.js"></script>
 }

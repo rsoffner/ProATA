@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "IdentityServer.Admin.EntityFramework.MySql": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:28983;http://localhost:28984"
+    }
+  }
+}

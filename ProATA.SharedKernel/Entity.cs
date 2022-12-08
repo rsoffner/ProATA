@@ -4,9 +4,9 @@ namespace ProATA.SharedKernel
 {
     public abstract class Entity<TId> : IEquatable<Entity<TId>>
     {
-        public TId Id { get; protected set; }
+        public virtual TId Id { get; protected set; }
 
-        public ICollection<IDomainEvent> Events { get; }
+        public virtual ICollection<IDomainEvent> Events { get; }
 
         protected Entity(TId id)
         {
@@ -18,6 +18,11 @@ namespace ProATA.SharedKernel
             this.Id = id;
 
             Events = new List<IDomainEvent>();
+        }
+
+        // EF requires an empty constructor
+        protected Entity()
+        {
         }
 
         public override bool Equals(object otherObject)
@@ -35,7 +40,7 @@ namespace ProATA.SharedKernel
             return this.Id.GetHashCode();
         }
 
-        public bool Equals(Entity<TId> other)
+        public virtual bool Equals(Entity<TId> other)
         {
             if (other == null)
             {

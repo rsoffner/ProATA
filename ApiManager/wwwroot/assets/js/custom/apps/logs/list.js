@@ -47,7 +47,7 @@ var LogDatable = function () {
             columns: [
                 {
                     data: 'timeStamp',
-                    render: $.fn.dataTable.render.moment('YYYY-MM-DDTHH:mm:ss', 'DD-MM-YYYY HH:mm:ss')
+                    type: 'date'
                 },
                 {
                     data: 'priorityName',

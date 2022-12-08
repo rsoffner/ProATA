@@ -2,13 +2,13 @@
 {
     public sealed class MessageReceivedEventArgs : EventArgs
     {
-        public BrokerMessage ReceivedMessage { get; }
+        public BrokerMessage Message { get; }
         public string AcknowledgeToken { get; }
         public CancellationToken CancellationToken { get; }
 
-        public MessageReceivedEventArgs(BrokerMessage receivedMessage, string acknowledgeToken, CancellationToken cancellationToken)
+        public MessageReceivedEventArgs(BrokerMessage message, string acknowledgeToken, CancellationToken cancellationToken)
         {
-            ReceivedMessage = receivedMessage;
+            Message = message;
             AcknowledgeToken = acknowledgeToken;
             CancellationToken = cancellationToken;
         }

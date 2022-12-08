@@ -1,9 +1,9 @@
 ﻿using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 using Microsoft.Extensions.Configuration;
+using ProATA.SharedKernel;
 using TaskProcessing.Core.Models;
 using TaskProcessing.Core.Repositories;
-using TaskProcessing.Data.Entities;
 using TaskProcessing.Data.GraphQL;
 
 namespace TaskProcessing.Data.Repositories
@@ -19,7 +19,17 @@ namespace TaskProcessing.Data.Repositories
             _url = _configuration["AppSettings:EndpointUrl"];
         }
 
-        public async Task<APITask> GetTask(Guid id, CancellationToken cancellationToken = default)
+        public void AddTask(APITask task)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<APITask> GetAllTasks()
+		{
+			throw new NotImplementedException();
+		}
+
+		public APITask GetTask(Guid id)
         {
             using (GraphQLHttpClient _client = new GraphQLHttpClient(_url, new NewtonsoftJsonSerializer()))
             {
@@ -40,11 +50,12 @@ namespace TaskProcessing.Data.Repositories
                     }
                 };
 
-                var response = await _client.SendQueryAsync<TaskResponse>(request, cancellationToken);
+                var response = _client.SendQueryAsync<TaskResponse>(request);
 
-                if (response.Errors == null)
+                if (response.Result.Errors == null)
                 {
-                    var task = new APITask(id, response.Data.Task.Title, response.Data.Task.Enabled);
+                    var scheduler = new Scheduler(response.Result.Data.Task.Scheduler.Id, response.Result.Data.Task.Scheduler.HostName, response.Result.Data.Task.Scheduler.DefaultHost);
+                    var task = new APITask(id, response.Result.Data.Task.Title, response.Result.Data.Task.Enabled, scheduler);
 
                     return task;
                 }
@@ -54,6 +65,16 @@ namespace TaskProcessing.Data.Repositories
                 }
                 
             }
+        }
+
+        public DatabaseResponse<APITask> GetTasks(int page, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DatabaseResponse<APITask> GetTasksByScheduler(Guid schedulerId, int page, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

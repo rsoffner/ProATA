@@ -21,10 +21,10 @@ namespace TaskProcessing.Core.MessageBrokers.Subscribers
                     throw new MessageBrokerTypeNotSupportedException($"The MessageBrokerType: {messageBrokerType}, is not supported yet");
             }
 
-            var commandTopic = configuration["MessageBroker:MessageBrokerCommandTopic"];
-            var commandQueue = configuration["MessageBroker:MessageBrokerCommandQueue"];
+            var topic = configuration["MessageBroker:MessageBrokerCommandTopic"];
+            var queue = configuration["MessageBroker:MessageBrokerCommandQueue"];
 
-            subscriber.Initialize(connectionString, commandTopic, commandQueue);
+            subscriber.Initialize(connectionString, topic, queue);
             return subscriber;
         }
     }

@@ -14,7 +14,7 @@ namespace TaskProcessing.Core.Services.TaskProcessor
     public sealed class TaskProcessorManager : IDisposable
     {
         private bool _disposed;
-        private readonly PublisherBase _publisher;
+        private readonly PublisherCommandMessageBase _publisher;
         private readonly IConfiguration _configuration;
         //private readonly PublisherBase<Message> _messageBrokerPublisher;
 

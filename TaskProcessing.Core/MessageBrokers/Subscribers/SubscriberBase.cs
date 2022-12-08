@@ -12,9 +12,14 @@ namespace TaskProcessing.Core.MessageBrokers.Subscribers
             return InitializeCore(connectionString, topicName, queueName);
         }
 
-        public void Subscribe(Func<SubscriberBase, MessageReceivedEventArgs, Task> receiveCallback)
+        public void Subscribe(Func<SubscriberBase, MessageReceivedEventArgs, Func<EventMessage, Task>, Task> receiveCallback, Func<EventMessage, Task> onMessageCallback)
         {
-            SubscribeCore(receiveCallback);
+            SubscribeCore(receiveCallback, onMessageCallback);
+        }
+
+        public void Subscribe(Func<SubscriberBase, MessageReceivedEventArgs, Func<CommandMessage, Task>, Task> receiveCallback, Func<CommandMessage, Task> onMessageCallback)
+        {
+            SubscribeCore(receiveCallback, onMessageCallback);
         }
 
         public Task Acknowledge(string acknowledgetoken)
@@ -45,6 +50,7 @@ namespace TaskProcessing.Core.MessageBrokers.Subscribers
         protected abstract Task AcknowledgeCore(string acknowledgetoken);
         protected abstract void Dispose(bool disposing);
         protected abstract Task InitializeCore(string connectionString, string topicName, string queueName);
-        protected abstract void SubscribeCore(Func<SubscriberBase, MessageReceivedEventArgs, Task> receiveCallback);
+        protected abstract void SubscribeCore(Func<SubscriberBase, MessageReceivedEventArgs, Func<EventMessage, Task>, Task> receiveCallback, Func<EventMessage, Task> onMessageCallback);
+        protected abstract void SubscribeCore(Func<SubscriberBase, MessageReceivedEventArgs, Func<CommandMessage, Task>, Task> receiveCallback, Func<CommandMessage, Task> onMessageCallback);
     }
 }

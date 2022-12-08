@@ -33,7 +33,7 @@ namespace TaskProcessing.Test
         {
             var runStrategy = new TaskProcessing.Core.Strategies.NewTask();
 
-            var task = new APITask(Guid.NewGuid(), "Test", true);
+            var task = new APITask(Guid.NewGuid(), "Test", true, new Scheduler(Guid.NewGuid(), "TestHost", false));
 
             var result = task.Run();
 
@@ -44,7 +44,7 @@ namespace TaskProcessing.Test
         public void TaskShouldRun()
         {
             var title = "Test";
-            var task = new APITask(Guid.NewGuid(), title, true);
+            var task = new APITask(Guid.NewGuid(), title, true, new Scheduler(Guid.NewGuid(), "TestHost", false));
 
             var taskManager = new TaskProcessorManager(_configuration);
             _ = taskManager.RunTask(task);

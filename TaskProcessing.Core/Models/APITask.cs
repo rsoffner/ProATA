@@ -4,29 +4,37 @@ using TaskProcessing.Core.Interfaces;
 
 namespace TaskProcessing.Core.Models
 {
-    public sealed class APITask : Entity<Guid>
+    public class APITask : Entity<Guid>
     {
-        public string Title { get; set; }
-        public bool Enabled { get; set; }
+        public virtual string Title { get; set; }
+        public virtual bool Enabled { get; set; }
+        public virtual Scheduler Scheduler { get; set; }
+        public virtual ISet<Schedule>? Schedules { get; set; }
 
-        internal TaskState _currentState;
-        internal IRunStrategy _runStrategy;
+        public virtual TaskState _currentState { get; set; }
+		public virtual IRunStrategy _runStrategy { get; set; }
 
-        public APITask(Guid id, string title, bool enabled = false) : base(id)
+
+		public APITask() { }
+
+        public APITask(Guid id, string title, bool enabled, Scheduler scheduler) : base(id)
         {
             Id = id;    
             Title = title;
             Enabled = enabled;
+            Scheduler = scheduler;
+
+            Schedules = new HashSet<Schedule>();
 
             _currentState = new ReadyState(this);
         }
 
-        public void SetRunStrategy(IRunStrategy strategy)
+        public virtual void SetRunStrategy(IRunStrategy strategy)
         {
             _runStrategy = strategy;
         }
 
-        public Task Run()
+        public virtual Task Run()
         {
             if (_runStrategy == null)
             {
@@ -38,48 +46,48 @@ namespace TaskProcessing.Core.Models
             return Task.CompletedTask;
         }
 
-        public Task End()
+        public virtual Task End()
         {
             _currentState.End();
 
             return Task.CompletedTask;
         }
 
-        public Task Enable()
+        public virtual Task Enable()
         {
             _currentState.Enable();
 
             return Task.CompletedTask;
         }
 
-        public Task Disable()
+        public virtual Task Disable()
         {
             _currentState.Disable();
 
             return Task.CompletedTask;
         }
 
-        public async Task _Run()
+        public virtual async Task _Run()
         {
             Events.Add(new TaskStateChangedEvent(this.Id, ProATA.SharedKernel.Enums.TaskState.Running));
             await _runStrategy.Run();
          }
 
-        public Task _End()
+        public virtual Task _End()
         {
             Events.Add(new TaskStateChangedEvent(this.Id, ProATA.SharedKernel.Enums.TaskState.Ready));
 
             return Task.CompletedTask;
         }
 
-        public Task _Enable()
+        public virtual Task _Enable()
         {
             Events.Add(new TaskStateChangedEvent(this.Id, ProATA.SharedKernel.Enums.TaskState.Ready));
 
             return Task.CompletedTask;
         }
 
-        public Task _Disable()
+        public virtual Task _Disable()
         {
             Events.Add(new TaskStateChangedEvent(this.Id, ProATA.SharedKernel.Enums.TaskState.Disabled));
 

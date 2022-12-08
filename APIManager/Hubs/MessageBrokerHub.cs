@@ -1,28 +1,32 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using ApiManager.Services.SignalProcessor;
+using Microsoft.AspNetCore.SignalR;
 using ProATA.SharedKernel.Enums;
-using System.Text;
-using System.Text.Json;
 using TaskProcessing.Core.MessageBrokers.Models;
-using TaskProcessing.Core.MessageBrokers.Publishers;
+using TaskProcessing.Core.Repositories;
 
-namespace APIManager.Hubs
+namespace ApiManager.Hubs
 {
     public class MessageBrokerHub : Hub
     {
-        private readonly PublisherBase _publisher;
+        private readonly IConfiguration _configuration;
+        private readonly SignalProcessorManager _signalProcessorManager;
+        private readonly ISchedulerRepository _schedulerRepository;
 
-        public MessageBrokerHub(IConfiguration configuration)
+        public MessageBrokerHub(IConfiguration configuration, ISchedulerRepository schedulerRepository) 
         {
-           _publisher = MessageBrokerPublisherFactory.Create(MessageBrokerType.RabbitMq, configuration);
+            _configuration = configuration;
+            _signalProcessorManager = new SignalProcessorManager(configuration);
+            _schedulerRepository = schedulerRepository;
         }
 
-        public async Task CommandReceived(Guid taskId, TaskCommand command)
+        public async Task CommandReceived(Guid schedulerId, Guid taskId, TaskCommand command)
         {
-            var commandMessage = new CommandMessage(taskId, command);
-            var json = JsonSerializer.Serialize(commandMessage);
-            var messageBytes = Encoding.UTF8.GetBytes(json);
-            var message = new BrokerMessage(messageBytes, Guid.NewGuid().ToString("N"), "application/json", DateTime.Now);
-            await _publisher.Publish(message);
+            var scheduler = _schedulerRepository.GetById(schedulerId);
+
+            if (scheduler != null)
+            {
+                await _signalProcessorManager.PublishCommandMessage(new CommandMessage(scheduler.HostName, taskId, command));
+            }
         }
     }
 }

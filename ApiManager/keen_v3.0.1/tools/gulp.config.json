@@ -1,0 +1,26 @@
+{
+  "config": {
+    "path": {
+      "src": "../{demo}/src"
+    },
+    "dist": [
+      "../../wwwroot/assets"
+    ],
+    "build": {
+      "plugins": {
+        "custom": {
+          "signalr": {
+            "src": {
+              "scripts": [
+                "{$config.path.node_modules}/@microsoft/signalr/dist/browser/signalr.js"
+              ]
+            },
+            "dist": {
+              "scripts": "{$config.dist}/plugins/custom/signalr/signalr.bundle.js"
+            }
+          }
+        }
+      }
+    }
+  }
+}

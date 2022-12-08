@@ -12,5 +12,8 @@ namespace TaskProcessing.Data.Entities
 
         [JsonProperty("enabled")]
         public virtual bool Enabled { get; set; }
+
+        [JsonProperty("scheduler")]
+        public virtual SchedulerDto Scheduler { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using TaskProcessing.Core.MessageBrokers.Models;
 
 namespace TaskProcessing.Core.MessageBrokers.Subscribers
 {
-    internal sealed class SubscriberRabbitMq : SubscriberBase
+    public sealed class SubscriberRabbitMq : SubscriberBase
     {
         private bool _disposed;
         private IConnection _connection;
@@ -23,14 +23,14 @@ namespace TaskProcessing.Core.MessageBrokers.Subscribers
             _channel = _connection.CreateModel();
 
             _channel.QueueDeclare(queueName, durable: true, exclusive: false, autoDelete: false);
-            _channel.QueueBind(queueName, topicName, routingKey: string.Empty, arguments: null);
+            _channel.QueueBind(queueName, topicName, routingKey: Environment.MachineName, arguments: null);
 
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 100, global: false);
             _queueName = queueName;
             return Task.CompletedTask;
         }
 
-        protected override void SubscribeCore(Func<SubscriberBase, MessageReceivedEventArgs, Task> receiveCallback)
+        protected override void SubscribeCore(Func<SubscriberBase, MessageReceivedEventArgs, Func<EventMessage, Task>, Task> receiveCallback, Func<EventMessage, Task> onMessageCallback)
         {
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += async (model, ea) =>
@@ -44,7 +44,27 @@ namespace TaskProcessing.Core.MessageBrokers.Subscribers
                 acknowledgeToken: ea.DeliveryTag.ToString(),
                 cancellationToken: new CancellationToken());
 
-                await receiveCallback(this, messageReceivedEventArgs);
+                await receiveCallback(this, messageReceivedEventArgs, onMessageCallback);
+            };
+
+            _channel.BasicConsume(_queueName, autoAck: false, consumer);
+        }
+
+        protected override void SubscribeCore(Func<SubscriberBase, MessageReceivedEventArgs, Func<CommandMessage, Task>, Task> receiveCallback, Func<CommandMessage, Task> onMessageCallback)
+        {
+            var consumer = new EventingBasicConsumer(_channel);
+            consumer.Received += async (model, ea) =>
+            {
+                var messageReceivedEventArgs = new MessageReceivedEventArgs(
+                new BrokerMessage(
+                body: ea.Body.ToArray(),
+                messageId: ea.BasicProperties.MessageId,
+                contentType: ea.BasicProperties.ContentType,
+                creationDateTime: GetDateTimeFromHeaderValue(ea.BasicProperties.Headers, "creation_date")),
+                acknowledgeToken: ea.DeliveryTag.ToString(),
+                cancellationToken: new CancellationToken());
+
+                await receiveCallback(this, messageReceivedEventArgs, onMessageCallback);
             };
 
             _channel.BasicConsume(_queueName, autoAck: false, consumer);

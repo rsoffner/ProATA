@@ -1,9 +1,7 @@
 ﻿using ProATA.SharedKernel.Enums;
-using System.Text.Json;
-using TaskProcessing.Core.MessageBrokers.Models;
-using TaskProcessing.Core.MessageBrokers.Subscribers;
 using TaskProcessing.Core.Repositories;
 using TaskProcessing.Core.Services.TaskProcessor;
+using TaskProcessor.Services.SignalProcessor;
 
 namespace TaskProcessor.WorkerServices
 {
@@ -11,7 +9,7 @@ namespace TaskProcessor.WorkerServices
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ITaskRepository _taskRepository;
-        private readonly SubscriberBase _subscriber;
+        private readonly SignalProcessorManager _signalProcessorManager;
         private readonly IConfiguration _configuration;
         private readonly TaskProcessorManager _taskProcessorManager;
 
@@ -21,33 +19,26 @@ namespace TaskProcessor.WorkerServices
             _taskProcessorManager = taskProcessorManager;
             _taskRepository = taskRepository;
             _configuration = configuration;
-            _subscriber = MessageBrokerSubscriberFactory.Create(MessageBrokerType.RabbitMq, _configuration);
+            _signalProcessorManager = new SignalProcessorManager(configuration);
         }
 
         public async Task DoWorkAsync(CancellationToken stoppingToken)
         {
             using (IServiceScope scope = _serviceProvider.CreateScope())
             {
-                _subscriber.Subscribe(async (subs, messageReceivedEventArgs) =>
+                await _signalProcessorManager.StartListening(async commandMessage =>
                 {
-                    var body = messageReceivedEventArgs.ReceivedMessage.Body;
-                    CommandMessage commandMessage = JsonSerializer.Deserialize<CommandMessage>(body);
-
-                    if (commandMessage != null)
+                    var task = _taskRepository.GetTask(commandMessage.TaskId);
+                    if (task != null)
                     {
-                        var task = await _taskRepository.GetTask(commandMessage.TaskId, stoppingToken);
-                        if (task != null)
+                        switch (commandMessage.Command)
                         {
-                            switch (commandMessage.Command)
-                            {
-                                case TaskCommand.Run:
-                                    await _taskProcessorManager.RunTask(task);
-                                    break;
-                            }
-
-                            await subs.Acknowledge(messageReceivedEventArgs.AcknowledgeToken);
+                            case TaskCommand.Run:
+                                await _taskProcessorManager.RunTask(task);
+                                break;
                         }
                     }
+
                 });
             }
         }

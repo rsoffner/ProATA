@@ -1,4 +1,4 @@
-namespace Dastone.Models
+namespace ApiManager.Models
 {
     public class ErrorViewModel
     {
