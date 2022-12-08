@@ -1,9 +1,9 @@
-﻿using TaskProcessing.Core.Models;
+﻿using TaskProcessing.Data.Entities;
 
 namespace ProATA.Service.Models
 {
     public class SchedulerAddedPayload
     {
-        public Scheduler Scheduler { get; set; }
+        public SchedulerDto Scheduler { get; set; }
     }
 }

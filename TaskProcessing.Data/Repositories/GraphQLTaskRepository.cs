@@ -40,6 +40,11 @@ namespace TaskProcessing.Data.Repositories
                             task(id: $id) {
                                 title
                                 enabled
+                                scheduler {
+                                    id
+                                    hostName
+                                    defaultHost
+                                }
                             }
                         }
                    ",

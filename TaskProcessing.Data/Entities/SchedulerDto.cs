@@ -1,16 +1,20 @@
 ﻿using Newtonsoft.Json;
+using TaskProcessing.Core.Models;
 
 namespace TaskProcessing.Data.Entities
 {
     public class SchedulerDto
     {
         [JsonProperty("id")]
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("hostName")]
-        public virtual string HostName { get; set; }
+        public string HostName { get; set; }
+
+        [JsonProperty("tasks")]
+        public ISet<APITaskDto> Tasks { get; set; }
 
         [JsonProperty("defaultHost")]
-        public virtual bool DefaultHost { get; set; }
+        public bool DefaultHost { get; set; }
     }
 }

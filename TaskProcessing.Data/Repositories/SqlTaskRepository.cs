@@ -25,12 +25,13 @@ namespace TaskProcessing.Data.Repositories
         {
             using (ISession session = SessionFactory.GetNewSession(_connectionString))
             {
-                var task = session.Get<APITaskDto>(id);
+                var task = session.Get<APITask>(id);
 
                 if (task != null)
                 {
-                    var scheduler = new Scheduler(task.Scheduler.Id, task.Scheduler.HostName, task.Scheduler.DefaultHost);
-                    return new APITask(task.Id, task.Title, task.Enabled, scheduler);
+                    NHibernateUtil.Initialize(task.Scheduler);
+                   
+                    return task;
                 }
                 else
                 {

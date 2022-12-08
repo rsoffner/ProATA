@@ -1,6 +1,7 @@
 ﻿using ProATA.Service.Models;
 using TaskProcessing.Core.Models;
 using TaskProcessing.Core.Repositories;
+using TaskProcessing.Data.Entities;
 
 namespace ProATA.Service
 {
@@ -8,12 +9,19 @@ namespace ProATA.Service
     {
         public SchedulerAddedPayload AddScheduler(string hostName, bool defaultHostname, [Service] ISchedulerRepository rep)
         {
-           var scheduler = new Scheduler(Guid.NewGuid(), hostName, defaultHostname);
-           rep.AddScheduler(scheduler);
+            var scheduler = new Scheduler(Guid.NewGuid(), hostName, defaultHostname);
+            rep.AddScheduler(scheduler);
+
+
 
             return new SchedulerAddedPayload
             {
-                Scheduler = scheduler,
+                Scheduler = new SchedulerDto
+                {
+                    Id = scheduler.Id,
+                    HostName = hostName,
+                    DefaultHost = defaultHostname,
+                },
             };
         }
 
@@ -25,7 +33,18 @@ namespace ProATA.Service
 
             return new TaskAddedPayload
             {
-                ApiTask = task,
+                ApiTask = new APITaskDto
+                {
+                    Id = task.Id,
+                    Title = title,
+                    Enabled = enabled,
+                    Scheduler = new SchedulerDto
+                    {
+                        Id = scheduler.Id,
+                        HostName = scheduler.HostName,
+                        DefaultHost = scheduler.DefaultHost,
+                    }
+                },
             };
         }
     }

@@ -16,7 +16,7 @@
     <PackageReference Include="FluentNHibernate" Version="3.1.0" />
     <PackageReference Include="GraphQL.Client" Version="5.1.0" />
     <PackageReference Include="GraphQL.Client.Serializer.Newtonsoft" Version="5.1.0" />
-    <PackageReference Include="NHibernate" Version="5.3.14" />
+    <PackageReference Include="NHibernate" Version="5.4.0" />
   </ItemGroup>
 
   <ItemGroup>

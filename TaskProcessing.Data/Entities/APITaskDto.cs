@@ -5,15 +5,18 @@ namespace TaskProcessing.Data.Entities
     public class APITaskDto
     {
         [JsonProperty("id")]
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("title")]
-        public virtual string Title { get; set; }
+        public string Title { get; set; }
 
         [JsonProperty("enabled")]
-        public virtual bool Enabled { get; set; }
+        public bool Enabled { get; set; }
 
         [JsonProperty("scheduler")]
-        public virtual SchedulerDto Scheduler { get; set; }
+        public SchedulerDto Scheduler { get; set; }
+
+        [JsonProperty("schedules")]
+        public IList<ScheduleDto> Schedules { get; set; }
     }
 }

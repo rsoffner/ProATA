@@ -1,9 +1,9 @@
-﻿using TaskProcessing.Core.Models;
+﻿using TaskProcessing.Data.Entities;
 
 namespace ProATA.Service.Models
 {
     public class TaskAddedPayload
     {
-        public APITask ApiTask { get; set; }
+        public APITaskDto ApiTask { get; set; }
     }
 }
