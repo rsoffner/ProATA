@@ -57,6 +57,7 @@ namespace TaskProcessing.Data.Repositories
 
                 var response = _client.SendQueryAsync<TaskResponse>(request);
 
+
                 if (response.Result.Errors == null)
                 {
                     var scheduler = new Scheduler(response.Result.Data.Task.Scheduler.Id, response.Result.Data.Task.Scheduler.HostName, response.Result.Data.Task.Scheduler.DefaultHost);
