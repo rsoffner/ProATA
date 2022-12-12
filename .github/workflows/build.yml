@@ -29,13 +29,13 @@ jobs:
     - name: Create artifacts folder
       run: |
         mkdir "$GITHUB_WORKSPACE/artifacts"
-        mkdir "$GITHUB_WORKSPACE/artifacts/APIManager"
+        mkdir "$GITHUB_WORKSPACE/artifacts/ApiManager"
         mkdir "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
         mkdir "$GITHUB_WORKSPACE/artifacts/ProATA.Service"
         mkdir "$GITHUB_WORKSPACE/artifacts/IdentityServer.Admin"
         mkdir "$GITHUB_WORKSPACE/artifacts/IdentityServer.STS.Identity"
     - name: Publish APIManager
-      run: dotnet publish APIManager/APIManager.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/APIManager"
+      run: dotnet publish ApiManager/ApiManager.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/ApiManager"
     - name: Publish TaskProcessor
       run: dotnet publish TaskProcessor/TaskProcessor.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
     - name: Publish ProATA.Service
@@ -48,9 +48,9 @@ jobs:
       uses: OctopusDeploy/install-octopus-cli-action@v1.1.8
       with:
         version: latest
-    - name: Package APIManager
+    - name: Package ApiManager
       run: |
-        octo pack --id="APIManager" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/APIManager" --outFolder="$GITHUB_WORKSPACE/artifacts"
+        octo pack --id="ApiManager" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/ApiManager" --outFolder="$GITHUB_WORKSPACE/artifacts"
     - name: Package TaskProcessor
       run: |
         octo pack --id="TaskProcessor" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/TaskProcessor" --outFolder="$GITHUB_WORKSPACE/artifacts"
@@ -68,6 +68,6 @@ jobs:
       with:
         api_key: ${{ secrets.OCTOPUS_API_TOKEN }}
         server: ${{ secrets.OCTOPUS_SERVER_URL }}
-        packages: "artifacts/APIManager.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip,artifacts/IdentityServer.Admin.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip,artifacts/IdentityServer.STS.Identity.${{ env.PACKAGE_VERSION }}.zip,artifacts/ProATA.Service.${{ env.PACKAGE_VERSION }}.zip"
+        packages: "artifacts/ApiManager.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip,artifacts/IdentityServer.Admin.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip,artifacts/IdentityServer.STS.Identity.${{ env.PACKAGE_VERSION }}.zip,artifacts/ProATA.Service.${{ env.PACKAGE_VERSION }}.zip"
         
     
