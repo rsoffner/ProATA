@@ -32,18 +32,12 @@ jobs:
         mkdir "$GITHUB_WORKSPACE/artifacts/ApiManager"
         mkdir "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
         mkdir "$GITHUB_WORKSPACE/artifacts/ProATA.Service"
-        mkdir "$GITHUB_WORKSPACE/artifacts/IdentityServer.Admin"
-        mkdir "$GITHUB_WORKSPACE/artifacts/IdentityServer.STS.Identity"
     - name: Publish APIManager
       run: dotnet publish ApiManager/ApiManager.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/ApiManager"
     - name: Publish TaskProcessor
       run: dotnet publish TaskProcessor/TaskProcessor.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/TaskProcessor"
     - name: Publish ProATA.Service
       run: dotnet publish ProATA.Service/ProATA.Service.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/ProATA.Service"
-    - name: Publish IdentityServer.Admin
-      run: dotnet publish IdentityServer/src/IdentityServer.Admin/IdentityServer.Admin.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/IdentityServer.Admin"
-    - name: Publish IdentityServer.STS.Identity
-      run: dotnet publish IdentityServer/src/IdentityServer.STS.Identity/IdentityServer.STS.Identity.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/IdentityServer.STS.Identity"
     - name: Install Octopus CLI
       uses: OctopusDeploy/install-octopus-cli-action@v1.1.8
       with:
@@ -57,17 +51,11 @@ jobs:
     - name: Package ProATA.Service
       run: |
         octo pack --id="ProATA.Service" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/ProATA.Service" --outFolder="$GITHUB_WORKSPACE/artifacts"
-    - name: Package IdentityServer.Admin
-      run: |
-        octo pack --id="IdentityServer.Admin" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/IdentityServer.Admin" --outFolder="$GITHUB_WORKSPACE/artifacts"
-    - name: Package IdentityServer.Admin
-      run: |
-        octo pack --id="IdentityServer.STS.Identity" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/IdentityServer.STS.Identity" --outFolder="$GITHUB_WORKSPACE/artifacts"
     - name: Push ProATA packages
       uses: OctopusDeploy/push-package-action@v1.1.1
       with:
         api_key: ${{ secrets.OCTOPUS_API_TOKEN }}
         server: ${{ secrets.OCTOPUS_SERVER_URL }}
-        packages: "artifacts/ApiManager.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip,artifacts/IdentityServer.Admin.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip,artifacts/IdentityServer.STS.Identity.${{ env.PACKAGE_VERSION }}.zip,artifacts/ProATA.Service.${{ env.PACKAGE_VERSION }}.zip"
+        packages: "artifacts/ApiManager.${{ env.PACKAGE_VERSION }}.zip,artifacts/TaskProcessor.${{ env.PACKAGE_VERSION }}.zip,artifacts/ProATA.Service.${{ env.PACKAGE_VERSION }}.zip"
         
     
