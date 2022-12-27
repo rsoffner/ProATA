@@ -1,6 +1,6 @@
 ﻿namespace TaskProcessing.Core.Models
 {
-    internal class RunningState : TaskState
+    public class RunningState : TaskState
     {
         public RunningState(APITask task) : base(task)
         {
@@ -23,7 +23,7 @@
         public override async Task End()
         {
             await _task._End();
-            _task._currentState = new ReadyState(_task);
+            _task.CurrentState = new ReadyState(_task);
         }
 
         public override Task Run()

@@ -4,10 +4,10 @@ namespace TaskProcessing.Core.Models
 {
     public class Scheduler : Entity<Guid>
     {
-        public virtual string? HostName { get; set; }
-        public virtual bool DefaultHost { get; set; }
+        public string? HostName { get; set; }
+        public bool DefaultHost { get; set; }
 
-        public virtual ISet<APITask> Tasks { get; set; }
+        public IList<APITask> Tasks { get; set; }
 
         protected Scheduler()
             : base(Guid.NewGuid()) // required for NHibernate

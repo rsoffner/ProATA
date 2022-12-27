@@ -1,12 +1,16 @@
 ﻿using ProATA.SharedKernel.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProATA.SharedKernel
 {
     public abstract class Entity<TId> : IEquatable<Entity<TId>>
     {
+        [Key]
         public virtual TId Id { get; protected set; }
 
-        public virtual ICollection<IDomainEvent> Events { get; }
+        [NotMapped]
+        public virtual ICollection<IDomainEvent> Events { get; set; }
 
         protected Entity(TId id)
         {

@@ -4,17 +4,17 @@ namespace TaskProcessing.Core.Models
 {
     public class LogItem : Entity<int>
     {
-        public virtual DateTime TimeStamp { get; protected set; }
-        public virtual int Priority { get; protected set; }
-        public virtual string Message { get; protected set; }
-        public virtual string PriorityName { get; protected set; }
-        public virtual string Url { get; protected set; }
-        public virtual string Detail { get; protected set; }
-        public virtual bool Acknowledged { get; set; }
-        public virtual int UserId { get; set; }
-        public virtual Guid TaskId { get; set; }
-        public virtual double Duration { get; set; }
-        public virtual string Source { get; set; }
+        public DateTime TimeStamp { get; protected set; }
+        public int Priority { get; protected set; }
+        public string Message { get; protected set; }
+        public string PriorityName { get; protected set; }
+        public string Url { get; protected set; }
+        public string Detail { get; protected set; }
+        public bool Acknowledged { get; set; }
+        public int UserId { get; set; }
+        public Guid TaskId { get; set; }
+        public double Duration { get; set; }
+        public string Source { get; set; }
 
         public LogItem() { }
 

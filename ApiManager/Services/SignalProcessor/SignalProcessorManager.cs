@@ -1,13 +1,13 @@
 ﻿using ApiManager.Services.SignalProcessor.Processors;
+using askProcessing.Core.Services.SignalProcessor;
 using TaskProcessing.Core.MessageBrokers.Models;
 using TaskProcessing.Core.MessageBrokers.Publishers;
 using TaskProcessing.Core.MessageBrokers.Subscribers;
 
 namespace ApiManager.Services.SignalProcessor
 {
-    public class SignalProcessorManager : IDisposable
+    public class SignalProcessorManager : ISignalProcessorManager
     {
-        private bool _disposed;
         private readonly IConfiguration _configuration;
 
         private SubscriberBase _subscriberEventMessage;
@@ -41,20 +41,9 @@ namespace ApiManager.Services.SignalProcessor
             await _publisherCommandMessage.Publish(commandMessage);
         }
 
-
-        private void Dispose(bool disposing)
+        public Task StartListening(Func<CommandMessage, Task> onMessageCallback)
         {
-            if (disposing && !_disposed)
-            {
-                _subscriberEventMessage?.Dispose();
-                _disposed = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            throw new NotImplementedException();
         }
     }
 }

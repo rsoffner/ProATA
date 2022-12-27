@@ -1,53 +1,47 @@
-﻿using Microsoft.Extensions.Configuration;
-using NHibernate;
+﻿using Microsoft.EntityFrameworkCore;
 using TaskProcessing.Core.Models;
 using TaskProcessing.Core.Repositories;
+using TaskProcessing.Data.Models;
 
 namespace TaskProcessing.Data.Repositories
 {
     public class SqlSchedulerRepository : ISchedulerRepository
     {
-        private readonly IConfiguration _configuration;
-        private readonly string _connectionString;
+        private readonly ProATADbContext _context;
 
-        public SqlSchedulerRepository(IConfiguration configuration)
+        public SqlSchedulerRepository(ProATADbContext context)
         {
-            _configuration = configuration;
-
-            _connectionString = _configuration.GetConnectionString("db1");
+            _context = context;
         }
 
         public void AddScheduler(Scheduler scheduler)
         {
-            using (ISession session = SessionFactory.GetNewSession(_connectionString))
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    session.Save(scheduler);
-                    transaction.Commit();
-                }
-            }
+            _context.Schedulers.Add(scheduler);
+            _context.SaveChanges();
         }
 
         public Scheduler GetById(Guid schedulerId)
         {
-            using (ISession session = SessionFactory.GetNewSession(_connectionString))
-            {
-                var scheduler =session.Get<Scheduler>(schedulerId);
+            var scheduler = _context.Schedulers
+                .Include(x => x.Tasks).Single(x => x.Id == schedulerId);
 
-                return scheduler;
-            }
+            return scheduler;
+        }
+
+        public Scheduler GetByHostName(string hostName)
+        {
+            var scheduler = _context.Schedulers
+                .Include(x => x.Tasks).Single(x => x.HostName == hostName)
+                ;
+
+            return scheduler;  
         }
 
         public IEnumerable<Scheduler> GetSchedulers()
         {
-            using (ISession session = SessionFactory.GetNewSession(_connectionString))
-            {
-                var query = session.Query<Scheduler>()
-                    .OrderBy(x => x.HostName);
+            var schedulers = _context.Schedulers.OrderBy(x => x.HostName);
 
-                return query.ToList();
-            }
+            return schedulers.ToList();
         }
     }
 

@@ -7,11 +7,11 @@ namespace TaskProcessing.Core.Models
         /// <summary>
         /// Gets or sets the days of the week on which the task runs.
         /// </summary>
-        public virtual DaysOfTheWeek DaysOfWeek { get; set; }
+        public DaysOfTheWeek DaysOfWeek { get; set; }
 
         /// <summary>
         /// Gets or sets the interval between the weeks in the schedule.
         /// </summary>
-        public virtual short WeeksInterval { get; set; }
+        public short WeeksInterval { get; set; }
     }
 }

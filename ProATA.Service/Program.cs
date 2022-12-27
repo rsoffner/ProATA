@@ -1,12 +1,19 @@
+using Microsoft.EntityFrameworkCore;
 using ProATA.Service;
 using TaskProcessing.Core.Repositories;
+using TaskProcessing.Data.Models;
 using TaskProcessing.Data.Repositories;
+
+var config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", false)
+    .Build();
+
+var connectionString = config.GetConnectionString("db1");
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-// builder.Services.AddControllers();
+builder.Services.AddDbContext<ProATADbContext>
+            (options => options.UseSqlServer(connectionString));
 
 builder.Services.AddCors();
 

@@ -8,10 +8,10 @@ namespace TaskProcessing.Core.Handlers
 {
     public class RunTaskHandler : IHandleCommand<Tasks.V1.Run>
     {
-        private readonly TaskProcessorManager _taskProcessorManager;
+        private readonly ITaskProcessorManager _taskProcessorManager;
         private readonly ITaskRepository _taskRepository;
 
-        public RunTaskHandler(TaskProcessorManager taskProcessorManager, ITaskRepository taskRepository)
+        public RunTaskHandler(ITaskProcessorManager taskProcessorManager, ITaskRepository taskRepository)
         {
             _taskProcessorManager = taskProcessorManager;
             _taskRepository = taskRepository;

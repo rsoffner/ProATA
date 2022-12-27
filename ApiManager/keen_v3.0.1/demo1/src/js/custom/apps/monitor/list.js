@@ -22,7 +22,7 @@ var MonitorDatatable = function () {
             serverSide: true,
             processing: true,
             ajax: {
-                url: 'https://localhost:7173/graphql',
+                url: 'z',
                 type: 'POST',
                 contentType: 'application/json',
                 data: function (d) {

@@ -1,6 +1,6 @@
 ﻿namespace TaskProcessing.Core.Models
 {
-    internal class DisabledState : TaskState
+    public class DisabledState : TaskState
     {
         public DisabledState(APITask task) : base(task)
         {
@@ -16,7 +16,7 @@
         public override async Task Enable()
         {
             await _task._Enable();
-            _task._currentState = new ReadyState(_task);
+            _task.CurrentState = new ReadyState(_task);
         }
 
         public override Task End()

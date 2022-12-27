@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace TaskProcessing.Core.MessageBrokers.Publishers
 {
-    public abstract class PublisherEventMessageBase : IDisposable
+    public abstract class PublisherEventMessageBase
     {
         private readonly JsonStringEnumConverter _jsonStringEnumConverter = new JsonStringEnumConverter(namingPolicy: default, allowIntegerValues: false);
         private readonly JsonSerializerOptions _jsonSerializerOptions;
@@ -30,13 +30,6 @@ namespace TaskProcessing.Core.MessageBrokers.Publishers
             return Encoding.UTF8.GetBytes(messageJson);
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         protected abstract Task PublishCore(CommandMessage commandMessage);
-        protected abstract void Dispose(bool disposing);
     }
 }

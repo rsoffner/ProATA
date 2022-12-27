@@ -5,7 +5,7 @@ using TaskProcessing.Core.MessageBrokers.Models;
 
 namespace TaskProcessing.Core.MessageBrokers.Subscribers
 {
-    public abstract class SubscriberBase : IDisposable
+    public abstract class SubscriberBase
     {
         public Task Initialize(string connectionString, string topicName, string queueName)
         {
@@ -41,14 +41,7 @@ namespace TaskProcessing.Core.MessageBrokers.Subscribers
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         protected abstract Task AcknowledgeCore(string acknowledgetoken);
-        protected abstract void Dispose(bool disposing);
         protected abstract Task InitializeCore(string connectionString, string topicName, string queueName);
         protected abstract void SubscribeCore(Func<SubscriberBase, MessageReceivedEventArgs, Func<EventMessage, Task>, Task> receiveCallback, Func<EventMessage, Task> onMessageCallback);
         protected abstract void SubscribeCore(Func<SubscriberBase, MessageReceivedEventArgs, Func<CommandMessage, Task>, Task> receiveCallback, Func<CommandMessage, Task> onMessageCallback);

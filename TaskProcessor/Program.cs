@@ -1,67 +1,56 @@
-using Lamar.Microsoft.DependencyInjection;
-using Microsoft.Extensions.Logging.Configuration;
-using Microsoft.Extensions.Logging.EventLog;
+using askProcessing.Core.Services.SignalProcessor;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 using ProATA.SharedKernel.Interfaces;
+using Quartz;
+using TaskProcesser.Services.TaskProcessor;
 using TaskProcessing.Core.Handlers;
+using TaskProcessing.Core.MessageBrokers.Subscribers;
 using TaskProcessing.Core.Repositories;
 using TaskProcessing.Core.Services.TaskProcessor;
+using TaskProcessing.Core.Services.TaskScheduler;
+using TaskProcessing.Data.Models;
 using TaskProcessing.Data.Repositories;
+using TaskProcessor.Services.SignalProcessor;
+using TaskProcessor.Services.TaskScheduler;
 using TaskProcessor.WorkerServices;
 using static TaskProcessing.Core.Contracts.Tasks;
 
-var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-logger.Debug("init main");
-
-try
-{
-    IHost host = Host.CreateDefaultBuilder(args)
-        .UseLamar((context, registry) =>
-        {
-            registry.AddHostedService<MessageBrokerWorker>();
-
-            registry.For<IScopedMessageBrokerWorker>().Use<ScopedMessageBrokerWorker>();
-            registry.ForSingletonOf<TaskProcessorManager>();
-            registry.For<IHandleCommand<V1.Run>>().Use<RunTaskHandler>();
-            registry.For<ITaskRepository>().Use<GraphQLTaskRepository>();
-            registry.Scan(_ =>
-            {
-                _.Assembly("ProATA.SharedKernel");
-                _.Assembly("TaskProcessing.Core");
-                _.ConnectImplementationsToTypesClosing(typeof(IHandle<>));
-            });
-        })
-        .UseNLog()
-        .Build();
-
-    await host.RunAsync();
-}
-catch (Exception exception)
-{
-    // NLog: catch setup errors
-    logger.Error(exception, "Stopped program because of exception");
-    throw;
-}
-finally
-{
-    // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-    LogManager.Shutdown();
-}
-/*
-IHost host = Host.CreateDefaultBuilder(args)
-    .UseWindowsService(options =>
-    {
-        options.ServiceName = "Api Task Processor Service";
-    })
-    .ConfigureServices(services =>
-    {
-        LoggerProviderOptions.RegisterProviderOptions<EventLogSettings, EventLogLoggerProvider>(services);
-
-        services.AddHostedService<MessageBrokerWorker>();
-        
-    })
+var config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", false)
     .Build();
 
+var connectionString = config.GetConnectionString("db1");
+
+IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices(services =>
+    {
+        services.AddLogging();
+        services.AddHostedService<MessageBrokerWorker>();
+
+        services.AddDbContext<ProATADbContext>
+            (options => options.UseSqlServer(connectionString));
+
+        services.AddScoped<IScopedMessageBrokerWorker, ScopedMessageBrokerWorker>();
+        services.AddScoped<SubscriberBase, SubscriberRabbitMq>();
+        services.AddScoped<ITaskProcessorManager, TaskProcessorManager>();
+        services.AddScoped<ITaskRepository, SqlTaskRepository>();
+        services.AddScoped<ISchedulerRepository, SqlSchedulerRepository>();
+        services.AddScoped<ITaskSchedulerManager, TaskSchedulerManager>();
+        services.AddScoped<ISignalProcessorManager, SignalProcessorManager>();
+        services.AddScoped<IHandleCommand<V1.Run>, RunTaskHandler>();
+
+        services.AddQuartz(q =>
+        {
+            // base Quartz scheduler, job and trigger configuration
+        });
+
+        services.AddQuartzServer(options =>
+        {
+            // when shutting down we want jobs to complete gracefully
+            options.WaitForJobsToComplete = true;
+        });
+    }).Build();
+
 await host.RunAsync();
-*/

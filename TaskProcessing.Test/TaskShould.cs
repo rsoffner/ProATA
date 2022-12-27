@@ -2,6 +2,7 @@ using Lamar;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using System;
+using TaskProcesser.Services.TaskProcessor;
 using TaskProcessing.Core.Models;
 using TaskProcessing.Core.Services;
 using TaskProcessing.Core.Services.TaskProcessor;

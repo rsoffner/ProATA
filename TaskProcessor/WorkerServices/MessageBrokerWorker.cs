@@ -36,12 +36,10 @@ namespace TaskProcessor.WorkerServices
 
         private async Task DoWorkAsync(CancellationToken stoppingToken)
         {
-            using (IServiceScope scope = _serviceProvider.CreateScope())
-            {
-                IScopedMessageBrokerWorker scopedMessageBrokerWorker = scope.ServiceProvider.GetRequiredService<IScopedMessageBrokerWorker>();
+            IServiceScope scope = _serviceProvider.CreateScope();
+            IScopedMessageBrokerWorker scopedMessageBrokerWorker = scope.ServiceProvider.GetRequiredService<IScopedMessageBrokerWorker>();
 
-                await scopedMessageBrokerWorker.DoWorkAsync(stoppingToken);
-            }
+            await scopedMessageBrokerWorker.DoWorkAsync(stoppingToken);
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

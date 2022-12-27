@@ -7,7 +7,6 @@ namespace TaskProcessing.Core.MessageBrokers.Subscribers
 {
     public sealed class SubscriberRabbitMq : SubscriberBase
     {
-        private bool _disposed;
         private IConnection _connection;
         private string _queueName;
         private IModel _channel;
@@ -90,17 +89,6 @@ namespace TaskProcessing.Core.MessageBrokers.Subscribers
         {
             _channel.BasicAck(ulong.Parse(acknowledgetoken), multiple: false);
             return Task.CompletedTask;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && !_disposed)
-            {
-                _connection.Close();
-                _connection.Dispose();
-
-                _disposed = true;
-            }
         }
     }
 }

@@ -24,6 +24,11 @@ namespace TaskProcessing.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public Scheduler GetByHostName(string hostName)
+        {
+            throw new NotImplementedException();
+        }
+
         public Scheduler GetById(Guid schedulerId)
         {
             using (GraphQLHttpClient _client = new GraphQLHttpClient(_url, new NewtonsoftJsonSerializer()))

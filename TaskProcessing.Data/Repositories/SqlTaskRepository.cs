@@ -1,114 +1,69 @@
-﻿using Microsoft.Extensions.Configuration;
-using NHibernate;
-using NHibernate.Criterion;
-using NHibernate.Linq;
+﻿using Microsoft.EntityFrameworkCore;
 using ProATA.SharedKernel;
 using TaskProcessing.Core.Models;
 using TaskProcessing.Core.Repositories;
-using TaskProcessing.Data.Entities;
+using TaskProcessing.Data.Models;
 
 namespace TaskProcessing.Data.Repositories
 {
     public class SqlTaskRepository : ITaskRepository
     {
-        private readonly IConfiguration _configuration;
-        private readonly string _connectionString;
+        private readonly ProATADbContext _context;
 
-        public SqlTaskRepository(IConfiguration configuration)
+        public SqlTaskRepository(ProATADbContext context)
         {
-            _configuration = configuration;
-
-            _connectionString = _configuration.GetConnectionString("db1");
+           _context = context;
         }
 
         public APITask GetTask(Guid id)
         {
-            using (ISession session = SessionFactory.GetNewSession(_connectionString))
-            {
-                var task = session.Get<APITask>(id);
+            var task = _context.Tasks.Single(x => x.Id == id);
 
-                if (task != null)
-                {
-                    NHibernateUtil.Initialize(task.Scheduler);
-                   
-                    return task;
-                }
-                else
-                {
-                    return null;
-                }
+            return task;
 
-                
-            }
         }
 
         public IEnumerable<APITask> GetAllTasks()
         {
-            using (ISession session = SessionFactory.GetNewSession(_connectionString))
-            {
-                var query = session.Query<APITask>()
+            var tasks = _context.Tasks.OrderBy(x => x.Title);
 
-                    .OrderBy(x => x.Title);
-
-                return query.ToList();
-            }
+            return tasks.ToList();
         }
 
         public DatabaseResponse<APITask> GetTasks(int page, int pageSize)
         {
-            using ISession session = SessionFactory.GetNewSession(_connectionString);
-            var count = session.CreateCriteria<APITask>()
-                    .SetProjection(Projections.Count(Projections.Id()))
-                    .FutureValue<int>();
+            var count = _context.Tasks.Count();
 
-            var query = session.Query<APITask>()
-                .OrderBy(x => x.Title)
-                .FetchMany(x => x.Schedules)
-                .Fetch(x => x.Scheduler)
-                .Take(pageSize)
-                .Skip((page - 1) * pageSize);
+            var data = _context.Tasks;
 
             return new DatabaseResponse<APITask>()
             {
-                Data = query.ToList(),
-                RecordsTotal = count.Value,
-                RecordsFiltered = count.Value
+                Data = data.Take(pageSize).Skip((page - 1) * pageSize).ToList(),
+                RecordsTotal = count,
+                RecordsFiltered = count
             };
         }
 
         public DatabaseResponse<APITask> GetTasksByScheduler(Guid schedulerId, int page, int pageSize)
         {
-            using ISession session = SessionFactory.GetNewSession(_connectionString);
-            var count = session.CreateCriteria<APITask>()
-                    .SetProjection(Projections.Count(Projections.Id()))
-                    .FutureValue<int>();
+            var data = _context.Tasks.Include(x => x.Scheduler).Include(x => x.Schedules).Where(x => x.Scheduler.Id == schedulerId);
 
-            var query = session.Query<APITask>()
-                .OrderBy(x => x.Title)
-                .Where(x => x.Scheduler.Id == schedulerId)
-                .FetchMany(x => x.Schedules)
-                .Fetch(x => x.Scheduler)
-                .Take(pageSize)
-                .Skip((page - 1) * pageSize);
+            var recordsTotal = _context.Tasks.Count();
+            var recordsFiltered = data.Count();
 
             return new DatabaseResponse<APITask>()
             {
-                Data = query.ToList(),
-                RecordsTotal = count.Value,
-                RecordsFiltered = count.Value
+                Data = data.Take(pageSize).Skip((page - 1) * pageSize).ToList(),
+                RecordsTotal = recordsTotal,
+                RecordsFiltered = recordsFiltered
             };
         }
 
         public void AddTask(APITask task)
         {
-            using (ISession session = SessionFactory.GetNewSession(_connectionString))
-            {
-                using (ITransaction transaction = session.BeginTransaction())
-                {
-                    session.Save(task);
-                    transaction.Commit();
-                }
-            }
+            _context.Tasks.Add(task);
+            _context.SaveChanges();
+
         }
     }
 }
