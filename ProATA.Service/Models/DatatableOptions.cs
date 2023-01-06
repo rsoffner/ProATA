@@ -5,5 +5,7 @@
         public DatatablePaginate? Paginate { get; set; }
 
         public Guid? SchedulerId { get; set; }
+
+        public Guid? TaskId { get; set; }
     }
 }

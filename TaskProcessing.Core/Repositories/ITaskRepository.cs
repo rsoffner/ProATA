@@ -11,6 +11,6 @@ namespace TaskProcessing.Core.Repositories
 
         DatabaseResponse<APITask> GetTasksByScheduler(Guid schedulerId, int page, int pageSize);
         void AddTask(APITask task);
-
+        void DeleteTask(APITask task);
     }
 }

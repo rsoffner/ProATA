@@ -34,7 +34,7 @@ namespace TaskProcessing.Data.Repositories
         {
             var count = _context.Tasks.Count();
 
-            var data = _context.Tasks;
+            var data = _context.Tasks.Include(x => x.Scheduler).Include(x => x.Schedules);
 
             return new DatabaseResponse<APITask>()
             {
@@ -64,6 +64,12 @@ namespace TaskProcessing.Data.Repositories
             _context.Tasks.Add(task);
             _context.SaveChanges();
 
+        }
+
+        public void DeleteTask(APITask task)
+        {
+            _context.Tasks.Remove(task);
+            _context.SaveChanges();
         }
     }
 }

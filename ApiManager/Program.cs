@@ -23,6 +23,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ILogRepository, SqlLogRepository>();
 builder.Services.AddScoped<ITaskRepository, SqlTaskRepository>();
 builder.Services.AddScoped<ISchedulerRepository, SqlSchedulerRepository>();
+builder.Services.AddScoped<IScheduleRepository, SqlScheduleRepository>();
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<ISignalProcessorManager, SignalProcessorManager>();

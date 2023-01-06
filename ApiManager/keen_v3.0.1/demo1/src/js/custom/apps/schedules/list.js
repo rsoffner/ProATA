@@ -1,27 +1,18 @@
 ﻿"use strict";
 
-var TasksDatatable = function () {
+var SchedulesDatatable = function () {
 
-    const TaskCommand = {
-        Create: 0,
-        Run: 1,
-        End: 2,
-        Enable: 3,
-        Disable: 4
-    };
-
-    var table = document.getElementById('taskTable');
+    var table = document.getElementById('scheduleTable');
     var datatable;
     var toolbarBase;
     var toolbarSelected;
     var selectedCount;
 
-    const schedulerEl = document.getElementById("SchedulerId");
-
     var initDatatable = function () {
 
+        const taskEl = document.getElementById("TaskId");
 
-        datatable = $('#taskTable').DataTable({
+        datatable = $('#scheduleTable').DataTable({
             serverSide: true,
             processing: true,
             stateSave: true,
@@ -36,12 +27,14 @@ var TasksDatatable = function () {
                 contentType: 'application/json',
                 data: function (d) {
                     var gql = `
-                    query tasks($options: DatatableOptionsInput!) {
-                        tasks(options: $options) {
+                    query schedulesByTask($options: DatatableOptionsInput!) {
+                        schedulesByTask(options: $options) {
                             data {
                                 id
-                                title
+                                type
                                 enabled
+                                startBoundery
+                                endBoundery
                             }
                             recordsTotal
                             recordsFiltered
@@ -58,7 +51,7 @@ var TasksDatatable = function () {
                                     page: (d.start / d.length) + 1,
                                     limit: d.length
                                 },
-                                schedulerId: schedulerEl.value
+                                taskId: taskEl.value
                             }
                         }
                     }
@@ -69,7 +62,7 @@ var TasksDatatable = function () {
 
                     json.recordsTotal = json.data.tasks.recordsTotal;
                     json.recordsFiltered = json.data.tasks.recordsFiltered;
-                    return json.data.tasks.data;
+                    return json.data.schedules.data;
                 }
             },
             columns: [
@@ -77,7 +70,10 @@ var TasksDatatable = function () {
                     data: 'id'
                 },
                 {
-                    data: 'title'
+                    data: 'startBoundery'
+                },
+                {
+                    data: 'type'
                 },
                 {
                     data: 'enabled'
@@ -103,7 +99,7 @@ var TasksDatatable = function () {
                     orderable: true,
                     render: function (data, type, row) {
                         return `
-                            <a href="/task/edit/${row.id}">${row.title}</a>
+                            ${row.startBoundery}
                         `;
                     }
                 },
@@ -140,17 +136,12 @@ var TasksDatatable = function () {
 						<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
 							<!--begin::Menu item-->
 							<div class="menu-item px-3">
-								<a href="/task/edit/${row.id}" class="menu-link px-3">Edit</a>
+								<a href="/schedule/edit/${row.id}" class="menu-link px-3">Edit</a>
 							</div>
 							<!--end::Menu item-->
 							<!--begin::Menu item-->
 							<div class="menu-item px-3">
-								<a href="#" class="menu-link px-3" data-tasks-table-filter="delete_row">Delete</a>
-							</div>
-							<!--end::Menu item-->
-							<!--begin::Menu item-->
-							<div class="menu-item px-3">
-								<a href="/task/${row.id}/schedule/create" class="menu-link px-3">Add Schedule</a>
+								<a href="#" class="menu-link px-3" data-schedules-table-filter="delete_row">Delete</a>
 							</div>
 							<!--end::Menu item-->
 						</div>
@@ -168,13 +159,13 @@ var TasksDatatable = function () {
         });
     };
     var initDialogs = function () {
-        
+
     }
 
     // Delete subscirption
     var handleDeleteRows = () => {
         // Select all delete buttons
-        const deleteButtons = table.querySelectorAll('[data-tasks-table-filter="delete_row"]');
+        const deleteButtons = table.querySelectorAll('[data-schedule-table-filter="delete_row"]');
 
         deleteButtons.forEach(d => {
             // Delete button on click
@@ -192,7 +183,7 @@ var TasksDatatable = function () {
 
                 // SweetAlert2 pop up --- official docs reference: https://sweetalert2.github.io/
                 Swal.fire({
-                    text: "Are you sure you want to delete " + taskName + "?",
+                    text: "Are you sure you want to delete this schedule?",
                     icon: "warning",
                     showCancelButton: true,
                     buttonsStyling: false,
@@ -205,7 +196,7 @@ var TasksDatatable = function () {
                 }).then(function (result) {
                     if (result.value) {
                         Swal.fire({
-                            text: "You have deleted " + taskName + "!.",
+                            text: "You have deleted the schedule!.",
                             icon: "success",
                             buttonsStyling: false,
                             confirmButtonText: "Ok, got it!",
@@ -214,7 +205,7 @@ var TasksDatatable = function () {
                             }
                         }).then(function () {
                             // Remove current row
-                            axios.delete('/api/task/delete/' + id)
+                            axios.delete('/api/schedule/delete/' + id)
                                 .then(function (response) {
 
                                 })
@@ -241,34 +232,6 @@ var TasksDatatable = function () {
         });
     }
 
-    // Filter Datatable
-    var handleFilters = () => {
-        // Select filter options
-        const filterForm = document.querySelector('[data-kt-task-table-filter="form"]');
-        const filterButton = filterForm.querySelector('[data-kt-task-table-filter="filter"]');
-        const selectOptions = filterForm.querySelectorAll('select');
-
-        // Filter datatable on submit
-        filterButton.addEventListener('click', function () {
-            var filterString = '';
-
-            // Get filter values
-            selectOptions.forEach((item, index) => {
-                if (item.value && item.value !== '') {
-                    if (index !== 0) {
-                        filterString += ' ';
-                    }
-
-                    // Build filter value options
-                    filterString += item.value;
-                }
-            });
-
-            // Filter datatable --- official docs reference: https://datatables.net/reference/api/search()
-            datatable.ajax.reload();
-        });
-    }
-
     // Init toggle toolbar
     var initToggleToolbar = () => {
         // Toggle selected action toolbar
@@ -276,10 +239,10 @@ var TasksDatatable = function () {
         const checkboxes = table.querySelectorAll('[type="checkbox"]');
 
         // Select elements
-        toolbarBase = document.querySelector('[data-task-table-toolbar="base"]');
-        toolbarSelected = document.querySelector('[data-task-table-toolbar="selected"]');
-        selectedCount = document.querySelector('[data-task-table-select="selected_count"]');
-        const deleteSelected = document.querySelector('[data-task-table-select="delete_selected"]');
+        toolbarBase = document.querySelector('[data-schedule-table-toolbar="base"]');
+        toolbarSelected = document.querySelector('[data-schedule-table-toolbar="selected"]');
+        selectedCount = document.querySelector('[data-schedule-table-select="selected_count"]');
+        const deleteSelected = document.querySelector('[data-schedule-table-select="delete_selected"]');
 
         // Toggle delete selected toolbar
         checkboxes.forEach(c => {
@@ -295,7 +258,7 @@ var TasksDatatable = function () {
         deleteSelected.addEventListener('click', function () {
             // SweetAlert2 pop up --- official docs reference: https://sweetalert2.github.io/
             Swal.fire({
-                text: "Are you sure you want to delete selected tasks?",
+                text: "Are you sure you want to delete selected schedules?",
                 icon: "warning",
                 showCancelButton: true,
                 buttonsStyling: false,
@@ -308,7 +271,7 @@ var TasksDatatable = function () {
             }).then(function (result) {
                 if (result.value) {
                     Swal.fire({
-                        text: "You have deleted all selected tasks!.",
+                        text: "You have deleted all selected schedules!.",
                         icon: "success",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -386,6 +349,6 @@ var TasksDatatable = function () {
 }();
 
 document.addEventListener("DOMContentLoaded", function () {
-    TasksDatatable.init();
+    SchedulesDatatable.init();
 })
 

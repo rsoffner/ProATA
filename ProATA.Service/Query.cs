@@ -1,5 +1,9 @@
-﻿using ProATA.Service.Models;
+﻿using Microsoft.Extensions.Options;
+using ProATA.Service.Models;
 using ProATA.SharedKernel;
+using System.Reactive.Concurrency;
+using TaskProcessing.Core.Contracts;
+using TaskProcessing.Core.Models;
 using TaskProcessing.Core.Repositories;
 using TaskProcessing.Data.Entities;
 
@@ -9,7 +13,7 @@ namespace ProATA.Service
     {
         public DatabaseResponse<APITaskDto> GetTasks(DatatableOptions options, [Service] ITaskRepository rep)
         {
-            if (options.SchedulerId == null)
+            if (options.SchedulerId == Guid.Empty)
             {
                 var response = rep.GetTasks(options.Paginate.Page, options.Paginate.Limit);
                 IList<APITaskDto> tasks = new List<APITaskDto>();
@@ -156,6 +160,32 @@ namespace ProATA.Service
                 Enabled = item.Enabled,
                 Scheduler = scheduler,
                 Schedules = schedules
+            };
+        }
+
+        // Schedule
+        public DatabaseResponse<ScheduleDto> GetSchedulesByTask(DatatableOptions options, [Service] IScheduleRepository rep)
+        {
+            var response = rep.GetSchedulesByTask((Guid)options.TaskId, options.Paginate.Page, options.Paginate.Limit);
+
+            IList<ScheduleDto> schedules = new List<ScheduleDto>();
+            foreach (var item in response.Data)
+            {
+                schedules.Add(new ScheduleDto
+                {
+                    Id = item.Id,
+                    Enabled = item.Enabled,
+                    StartBoundery = item.StartBoundery,
+                    EndBoundery = item.EndBoundery,
+                    Type = item.GetType().Name
+                });
+            }
+
+            return new DatabaseResponse<ScheduleDto>
+            {
+                Data = schedules,
+                RecordsTotal = response.RecordsTotal,
+                RecordsFiltered = response.RecordsFiltered,
             };
         }
             

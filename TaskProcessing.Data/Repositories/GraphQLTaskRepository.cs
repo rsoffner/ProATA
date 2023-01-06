@@ -24,6 +24,11 @@ namespace TaskProcessing.Data.Repositories
             throw new NotImplementedException();
         }
 
+        public void DeleteTask(APITask task)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<APITask> GetAllTasks()
 		{
 			throw new NotImplementedException();

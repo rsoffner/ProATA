@@ -7,6 +7,8 @@ namespace TaskProcessing.Data.Entities
     {
         public virtual Guid Id { get; set; }
 
+        public string Type { get; set; }
+
         /// <summary>
         /// Gets or sets a Boolean value that indicates whether the schedule is enabled.
         /// </summary>
