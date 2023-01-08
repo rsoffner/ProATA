@@ -4350,19 +4350,19 @@ span.flatpickr-weekday {
 
 @media (pointer: coarse) {
   .ql-snow.ql-toolbar button:hover:not(.ql-active),
-.ql-snow .ql-toolbar button:hover:not(.ql-active) {
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) {
     color: #444;
   }
   .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-fill,
-.ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-fill,
-.ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
-.ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-fill,
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
     fill: #444;
   }
   .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke,
-.ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke,
-.ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter,
-.ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter {
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter {
     stroke: #444;
   }
 }
@@ -5771,13 +5771,24 @@ button.toastr-close-button {
     padding: 15px 50px 15px 15px;
   }
 }
+@keyframes opaque {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes resizeanim {
+  0%, to {
+    opacity: 0;
+  }
+}
 .apexcharts-canvas {
   position: relative;
   user-select: none;
-  /* cannot give overflow: hidden as it will crop tooltips which overflow outside chart area */
 }
 
-/* scrollbar is not visible by default for legend, hence forcing the visibility */
 .apexcharts-canvas ::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 6px;
@@ -5801,6 +5812,11 @@ button.toastr-close-button {
 .legend-mouseover-inactive {
   transition: 0.15s ease all;
   opacity: 0.2;
+}
+
+.apexcharts-legend-text {
+  padding-left: 15px;
+  margin-left: -15px;
 }
 
 .apexcharts-series-collapsed {
@@ -5851,7 +5867,7 @@ button.toastr-close-button {
 }
 
 .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
-  background: #ECEFF1;
+  background: #eceff1;
   border-bottom: 1px solid #ddd;
 }
 
@@ -5860,42 +5876,25 @@ button.toastr-close-button {
   border-bottom: 1px solid #333;
 }
 
-.apexcharts-tooltip-text-y-value,
-.apexcharts-tooltip-text-goals-value,
-.apexcharts-tooltip-text-z-value {
+.apexcharts-tooltip-text-goals-value, .apexcharts-tooltip-text-y-value, .apexcharts-tooltip-text-z-value {
   display: inline-block;
-  font-weight: 600;
   margin-left: 5px;
+  font-weight: 600;
 }
 
-.apexcharts-tooltip-title:empty,
-.apexcharts-tooltip-text-y-label:empty,
-.apexcharts-tooltip-text-y-value:empty,
-.apexcharts-tooltip-text-goals-label:empty,
-.apexcharts-tooltip-text-goals-value:empty,
-.apexcharts-tooltip-text-z-value:empty {
+.apexcharts-tooltip-text-goals-label:empty, .apexcharts-tooltip-text-goals-value:empty, .apexcharts-tooltip-text-y-label:empty, .apexcharts-tooltip-text-y-value:empty, .apexcharts-tooltip-text-z-value:empty, .apexcharts-tooltip-title:empty {
   display: none;
 }
 
-.apexcharts-tooltip-text-y-value,
-.apexcharts-tooltip-text-goals-value,
-.apexcharts-tooltip-text-z-value {
-  font-weight: 600;
-}
-
-.apexcharts-tooltip-text-goals-label,
-.apexcharts-tooltip-text-goals-value {
+.apexcharts-tooltip-text-goals-label, .apexcharts-tooltip-text-goals-value {
   padding: 6px 0 5px;
 }
 
-.apexcharts-tooltip-goals-group,
-.apexcharts-tooltip-text-goals-label,
-.apexcharts-tooltip-text-goals-value {
+.apexcharts-tooltip-goals-group, .apexcharts-tooltip-text-goals-label, .apexcharts-tooltip-text-goals-value {
   display: flex;
 }
 
-.apexcharts-tooltip-text-goals-label:not(:empty),
-.apexcharts-tooltip-text-goals-value:not(:empty) {
+.apexcharts-tooltip-text-goals-label:not(:empty), .apexcharts-tooltip-text-goals-value:not(:empty) {
   margin-top: -6px;
 }
 
@@ -5903,7 +5902,7 @@ button.toastr-close-button {
   width: 12px;
   height: 12px;
   position: relative;
-  top: 0px;
+  top: 0;
   margin-right: 10px;
   border-radius: 50%;
 }
@@ -5920,8 +5919,7 @@ button.toastr-close-button {
   opacity: 1;
 }
 
-.apexcharts-tooltip-series-group.apexcharts-active,
-.apexcharts-tooltip-series-group:last-child {
+.apexcharts-tooltip-series-group.apexcharts-active, .apexcharts-tooltip-series-group:last-child {
   padding-bottom: 4px;
 }
 
@@ -5936,7 +5934,7 @@ button.toastr-close-button {
   padding: 6px 0 5px;
 }
 
-.apexcharts-tooltip-box, .apexcharts-custom-tooltip {
+.apexcharts-custom-tooltip, .apexcharts-tooltip-box {
   padding: 4px 8px;
 }
 
@@ -5950,7 +5948,7 @@ button.toastr-close-button {
 }
 
 .apexcharts-tooltip-box span.value {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .apexcharts-tooltip-rangebar {
@@ -5963,14 +5961,13 @@ button.toastr-close-button {
 }
 
 .apexcharts-tooltip-rangebar .series-name {
-  font-weight: bold;
+  font-weight: 700;
   display: block;
   margin-bottom: 5px;
 }
 
-.apexcharts-xaxistooltip {
+.apexcharts-xaxistooltip, .apexcharts-yaxistooltip {
   opacity: 0;
-  padding: 9px 10px;
   pointer-events: none;
   color: #373d3f;
   font-size: 13px;
@@ -5978,8 +5975,12 @@ button.toastr-close-button {
   border-radius: 2px;
   position: absolute;
   z-index: 10;
-  background: #ECEFF1;
-  border: 1px solid #90A4AE;
+  background: #eceff1;
+  border: 1px solid #90a4ae;
+}
+
+.apexcharts-xaxistooltip {
+  padding: 9px 10px;
   transition: 0.15s ease all;
 }
 
@@ -5989,8 +5990,7 @@ button.toastr-close-button {
   color: #fff;
 }
 
-.apexcharts-xaxistooltip:after,
-.apexcharts-xaxistooltip:before {
+.apexcharts-xaxistooltip:after, .apexcharts-xaxistooltip:before {
   left: 50%;
   border: solid transparent;
   content: " ";
@@ -6001,56 +6001,46 @@ button.toastr-close-button {
 }
 
 .apexcharts-xaxistooltip:after {
-  border-color: rgba(236, 239, 241, 0);
+  border-color: transparent;
   border-width: 6px;
   margin-left: -6px;
 }
 
 .apexcharts-xaxistooltip:before {
-  border-color: rgba(144, 164, 174, 0);
+  border-color: transparent;
   border-width: 7px;
   margin-left: -7px;
 }
 
-.apexcharts-xaxistooltip-bottom:after,
-.apexcharts-xaxistooltip-bottom:before {
+.apexcharts-xaxistooltip-bottom:after, .apexcharts-xaxistooltip-bottom:before {
   bottom: 100%;
 }
 
-.apexcharts-xaxistooltip-top:after,
-.apexcharts-xaxistooltip-top:before {
+.apexcharts-xaxistooltip-top:after, .apexcharts-xaxistooltip-top:before {
   top: 100%;
 }
 
 .apexcharts-xaxistooltip-bottom:after {
-  border-bottom-color: #ECEFF1;
+  border-bottom-color: #eceff1;
 }
 
 .apexcharts-xaxistooltip-bottom:before {
-  border-bottom-color: #90A4AE;
+  border-bottom-color: #90a4ae;
 }
 
-.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:after {
-  border-bottom-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:before {
+.apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:after, .apexcharts-xaxistooltip-bottom.apexcharts-theme-dark:before {
   border-bottom-color: rgba(0, 0, 0, 0.5);
 }
 
 .apexcharts-xaxistooltip-top:after {
-  border-top-color: #ECEFF1;
+  border-top-color: #eceff1;
 }
 
 .apexcharts-xaxistooltip-top:before {
-  border-top-color: #90A4AE;
+  border-top-color: #90a4ae;
 }
 
-.apexcharts-xaxistooltip-top.apexcharts-theme-dark:after {
-  border-top-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-xaxistooltip-top.apexcharts-theme-dark:before {
+.apexcharts-xaxistooltip-top.apexcharts-theme-dark:after, .apexcharts-xaxistooltip-top.apexcharts-theme-dark:before {
   border-top-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -6060,17 +6050,7 @@ button.toastr-close-button {
 }
 
 .apexcharts-yaxistooltip {
-  opacity: 0;
   padding: 4px 10px;
-  pointer-events: none;
-  color: #373d3f;
-  font-size: 13px;
-  text-align: center;
-  border-radius: 2px;
-  position: absolute;
-  z-index: 10;
-  background: #ECEFF1;
-  border: 1px solid #90A4AE;
 }
 
 .apexcharts-yaxistooltip.apexcharts-theme-dark {
@@ -6079,8 +6059,7 @@ button.toastr-close-button {
   color: #fff;
 }
 
-.apexcharts-yaxistooltip:after,
-.apexcharts-yaxistooltip:before {
+.apexcharts-yaxistooltip:after, .apexcharts-yaxistooltip:before {
   top: 50%;
   border: solid transparent;
   content: " ";
@@ -6091,56 +6070,46 @@ button.toastr-close-button {
 }
 
 .apexcharts-yaxistooltip:after {
-  border-color: rgba(236, 239, 241, 0);
+  border-color: transparent;
   border-width: 6px;
   margin-top: -6px;
 }
 
 .apexcharts-yaxistooltip:before {
-  border-color: rgba(144, 164, 174, 0);
+  border-color: transparent;
   border-width: 7px;
   margin-top: -7px;
 }
 
-.apexcharts-yaxistooltip-left:after,
-.apexcharts-yaxistooltip-left:before {
+.apexcharts-yaxistooltip-left:after, .apexcharts-yaxistooltip-left:before {
   left: 100%;
 }
 
-.apexcharts-yaxistooltip-right:after,
-.apexcharts-yaxistooltip-right:before {
+.apexcharts-yaxistooltip-right:after, .apexcharts-yaxistooltip-right:before {
   right: 100%;
 }
 
 .apexcharts-yaxistooltip-left:after {
-  border-left-color: #ECEFF1;
+  border-left-color: #eceff1;
 }
 
 .apexcharts-yaxistooltip-left:before {
-  border-left-color: #90A4AE;
+  border-left-color: #90a4ae;
 }
 
-.apexcharts-yaxistooltip-left.apexcharts-theme-dark:after {
-  border-left-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-yaxistooltip-left.apexcharts-theme-dark:before {
+.apexcharts-yaxistooltip-left.apexcharts-theme-dark:after, .apexcharts-yaxistooltip-left.apexcharts-theme-dark:before {
   border-left-color: rgba(0, 0, 0, 0.5);
 }
 
 .apexcharts-yaxistooltip-right:after {
-  border-right-color: #ECEFF1;
+  border-right-color: #eceff1;
 }
 
 .apexcharts-yaxistooltip-right:before {
-  border-right-color: #90A4AE;
+  border-right-color: #90a4ae;
 }
 
-.apexcharts-yaxistooltip-right.apexcharts-theme-dark:after {
-  border-right-color: rgba(0, 0, 0, 0.5);
-}
-
-.apexcharts-yaxistooltip-right.apexcharts-theme-dark:before {
+.apexcharts-yaxistooltip-right.apexcharts-theme-dark:after, .apexcharts-yaxistooltip-right.apexcharts-theme-dark:before {
   border-right-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -6152,15 +6121,13 @@ button.toastr-close-button {
   display: none;
 }
 
-.apexcharts-xcrosshairs,
-.apexcharts-ycrosshairs {
+.apexcharts-xcrosshairs, .apexcharts-ycrosshairs {
   pointer-events: none;
   opacity: 0;
   transition: 0.15s ease all;
 }
 
-.apexcharts-xcrosshairs.apexcharts-active,
-.apexcharts-ycrosshairs.apexcharts-active {
+.apexcharts-xcrosshairs.apexcharts-active, .apexcharts-ycrosshairs.apexcharts-active {
   opacity: 1;
   transition: 0.15s ease all;
 }
@@ -6179,14 +6146,12 @@ button.toastr-close-button {
   visibility: hidden;
 }
 
-.apexcharts-selection-rect + g .svg_select_boundingRect,
-.apexcharts-selection-rect + g .svg_select_points_rot {
+.apexcharts-selection-rect + g .svg_select_boundingRect, .apexcharts-selection-rect + g .svg_select_points_rot {
   opacity: 0;
   visibility: hidden;
 }
 
-.apexcharts-selection-rect + g .svg_select_points_l,
-.apexcharts-selection-rect + g .svg_select_points_r {
+.apexcharts-selection-rect + g .svg_select_points_l, .apexcharts-selection-rect + g .svg_select_points_r {
   cursor: ew-resize;
   opacity: 1;
   visibility: visible;
@@ -6206,28 +6171,17 @@ button.toastr-close-button {
   cursor: move;
 }
 
-.apexcharts-zoom-icon,
-.apexcharts-zoomin-icon,
-.apexcharts-zoomout-icon,
-.apexcharts-reset-icon,
-.apexcharts-pan-icon,
-.apexcharts-selection-icon,
-.apexcharts-menu-icon,
-.apexcharts-toolbar-custom-icon {
+.apexcharts-menu-icon, .apexcharts-pan-icon, .apexcharts-reset-icon, .apexcharts-selection-icon, .apexcharts-toolbar-custom-icon, .apexcharts-zoom-icon, .apexcharts-zoomin-icon, .apexcharts-zoomout-icon {
   cursor: pointer;
   width: 20px;
   height: 20px;
   line-height: 24px;
-  color: #6E8192;
+  color: #6e8192;
   text-align: center;
 }
 
-.apexcharts-zoom-icon svg,
-.apexcharts-zoomin-icon svg,
-.apexcharts-zoomout-icon svg,
-.apexcharts-reset-icon svg,
-.apexcharts-menu-icon svg {
-  fill: #6E8192;
+.apexcharts-menu-icon svg, .apexcharts-reset-icon svg, .apexcharts-zoom-icon svg, .apexcharts-zoomin-icon svg, .apexcharts-zoomout-icon svg {
+  fill: #6e8192;
 }
 
 .apexcharts-selection-icon svg {
@@ -6235,34 +6189,19 @@ button.toastr-close-button {
   transform: scale(0.76);
 }
 
-.apexcharts-theme-dark .apexcharts-zoom-icon svg,
-.apexcharts-theme-dark .apexcharts-zoomin-icon svg,
-.apexcharts-theme-dark .apexcharts-zoomout-icon svg,
-.apexcharts-theme-dark .apexcharts-reset-icon svg,
-.apexcharts-theme-dark .apexcharts-pan-icon svg,
-.apexcharts-theme-dark .apexcharts-selection-icon svg,
-.apexcharts-theme-dark .apexcharts-menu-icon svg,
-.apexcharts-theme-dark .apexcharts-toolbar-custom-icon svg {
+.apexcharts-theme-dark .apexcharts-menu-icon svg, .apexcharts-theme-dark .apexcharts-pan-icon svg, .apexcharts-theme-dark .apexcharts-reset-icon svg, .apexcharts-theme-dark .apexcharts-selection-icon svg, .apexcharts-theme-dark .apexcharts-toolbar-custom-icon svg, .apexcharts-theme-dark .apexcharts-zoom-icon svg, .apexcharts-theme-dark .apexcharts-zoomin-icon svg, .apexcharts-theme-dark .apexcharts-zoomout-icon svg {
   fill: #f3f4f5;
 }
 
-.apexcharts-canvas .apexcharts-zoom-icon.apexcharts-selected svg,
-.apexcharts-canvas .apexcharts-selection-icon.apexcharts-selected svg,
-.apexcharts-canvas .apexcharts-reset-zoom-icon.apexcharts-selected svg {
-  fill: #008FFB;
+.apexcharts-canvas .apexcharts-reset-zoom-icon.apexcharts-selected svg, .apexcharts-canvas .apexcharts-selection-icon.apexcharts-selected svg, .apexcharts-canvas .apexcharts-zoom-icon.apexcharts-selected svg {
+  fill: #008ffb;
 }
 
-.apexcharts-theme-light .apexcharts-selection-icon:not(.apexcharts-selected):hover svg,
-.apexcharts-theme-light .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg,
-.apexcharts-theme-light .apexcharts-zoomin-icon:hover svg,
-.apexcharts-theme-light .apexcharts-zoomout-icon:hover svg,
-.apexcharts-theme-light .apexcharts-reset-icon:hover svg,
-.apexcharts-theme-light .apexcharts-menu-icon:hover svg {
+.apexcharts-theme-light .apexcharts-menu-icon:hover svg, .apexcharts-theme-light .apexcharts-reset-icon:hover svg, .apexcharts-theme-light .apexcharts-selection-icon:not(.apexcharts-selected):hover svg, .apexcharts-theme-light .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg, .apexcharts-theme-light .apexcharts-zoomin-icon:hover svg, .apexcharts-theme-light .apexcharts-zoomout-icon:hover svg {
   fill: #333;
 }
 
-.apexcharts-selection-icon,
-.apexcharts-menu-icon {
+.apexcharts-menu-icon, .apexcharts-selection-icon {
   position: relative;
 }
 
@@ -6270,14 +6209,11 @@ button.toastr-close-button {
   margin-left: 5px;
 }
 
-.apexcharts-zoom-icon,
-.apexcharts-reset-icon,
-.apexcharts-menu-icon {
+.apexcharts-menu-icon, .apexcharts-reset-icon, .apexcharts-zoom-icon {
   transform: scale(0.85);
 }
 
-.apexcharts-zoomin-icon,
-.apexcharts-zoomout-icon {
+.apexcharts-zoomin-icon, .apexcharts-zoomout-icon {
   transform: scale(0.7);
 }
 
@@ -6289,17 +6225,17 @@ button.toastr-close-button {
   transform: scale(0.62);
   position: relative;
   left: 1px;
-  top: 0px;
+  top: 0;
 }
 
 .apexcharts-pan-icon svg {
   fill: #fff;
-  stroke: #6E8192;
+  stroke: #6e8192;
   stroke-width: 2;
 }
 
 .apexcharts-pan-icon.apexcharts-selected svg {
-  stroke: #008FFB;
+  stroke: #008ffb;
 }
 
 .apexcharts-pan-icon:not(.apexcharts-selected):hover svg {
@@ -6312,7 +6248,7 @@ button.toastr-close-button {
   max-width: 176px;
   text-align: right;
   border-radius: 3px;
-  padding: 0px 6px 2px 6px;
+  padding: 0 6px 2px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -6358,15 +6294,11 @@ button.toastr-close-button {
     opacity: 1;
   }
 }
-.apexcharts-datalabel.apexcharts-element-hidden {
+.apexcharts-canvas .apexcharts-element-hidden, .apexcharts-datalabel.apexcharts-element-hidden, .apexcharts-hide .apexcharts-series-points {
   opacity: 0;
 }
 
-.apexcharts-pie-label,
-.apexcharts-datalabels,
-.apexcharts-datalabel,
-.apexcharts-datalabel-label,
-.apexcharts-datalabel-value {
+.apexcharts-datalabel, .apexcharts-datalabel-label, .apexcharts-datalabel-value, .apexcharts-datalabels, .apexcharts-pie-label {
   cursor: default;
   pointer-events: none;
 }
@@ -6379,78 +6311,40 @@ button.toastr-close-button {
   animation-timing-function: ease;
 }
 
-.apexcharts-canvas .apexcharts-element-hidden {
-  opacity: 0;
-}
-
-.apexcharts-hide .apexcharts-series-points {
-  opacity: 0;
-}
-
-.apexcharts-gridline,
-.apexcharts-annotation-rect,
-.apexcharts-xaxis-annotation-label,
-.apexcharts-yaxis-annotation-label,
-.apexcharts-point-annotation-label,
-.apexcharts-tooltip .apexcharts-marker,
-.apexcharts-area-series .apexcharts-area,
-.apexcharts-line,
-.apexcharts-zoom-rect,
-.apexcharts-toolbar svg,
-.apexcharts-area-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events,
-.apexcharts-line-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events,
-.apexcharts-radar-series path,
-.apexcharts-radar-series polygon {
+.apexcharts-annotation-rect, .apexcharts-area-series .apexcharts-area, .apexcharts-area-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events, .apexcharts-gridline, .apexcharts-line, .apexcharts-line-series .apexcharts-series-markers .apexcharts-marker.no-pointer-events, .apexcharts-point-annotation-label, .apexcharts-radar-series path, .apexcharts-radar-series polygon, .apexcharts-toolbar svg, .apexcharts-tooltip .apexcharts-marker, .apexcharts-xaxis-annotation-label, .apexcharts-yaxis-annotation-label, .apexcharts-zoom-rect {
   pointer-events: none;
 }
 
-/* markers */
 .apexcharts-marker {
   transition: 0.15s ease all;
 }
 
-@keyframes opaque {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-/* Resize generated styles */
-@keyframes resizeanim {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 0;
-  }
-}
 .resize-triggers {
   animation: 1ms resizeanim;
   visibility: hidden;
   opacity: 0;
-}
-
-.resize-triggers,
-.resize-triggers > div,
-.contract-trigger:before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
 
+.contract-trigger:before, .resize-triggers, .resize-triggers > div {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .resize-triggers > div {
+  height: 100%;
+  width: 100%;
   background: #eee;
   overflow: auto;
 }
 
 .contract-trigger:before {
+  overflow: hidden;
   width: 200%;
   height: 200%;
 }
@@ -16622,7 +16516,7 @@ readers do not read off random characters that represent icons */
 @font-face {
   font-display: block;
   font-family: "bootstrap-icons";
-  src: url("fonts/bootstrap-icons/bootstrap-icons.woff2?8d200481aa7f02a2d63a331fc782cfaf") format("woff2"), url("fonts/bootstrap-icons/bootstrap-icons.woff?8d200481aa7f02a2d63a331fc782cfaf") format("woff");
+  src: url("fonts/bootstrap-icons/bootstrap-icons.woff2?24e3eb84d0bcaf83d77f904c78ac1f47") format("woff2"), url("fonts/bootstrap-icons/bootstrap-icons.woff?24e3eb84d0bcaf83d77f904c78ac1f47") format("woff");
 }
 .bi::before,
 [class^=bi-]::before,
@@ -24055,8 +23949,576 @@ readers do not read off random characters that represent icons */
   content: "\f83e";
 }
 
+.bi-0-circle-fill::before {
+  content: "\f83f";
+}
+
+.bi-0-circle::before {
+  content: "\f840";
+}
+
+.bi-0-square-fill::before {
+  content: "\f841";
+}
+
+.bi-0-square::before {
+  content: "\f842";
+}
+
+.bi-rocket-fill::before {
+  content: "\f843";
+}
+
+.bi-rocket-takeoff-fill::before {
+  content: "\f844";
+}
+
+.bi-rocket-takeoff::before {
+  content: "\f845";
+}
+
+.bi-rocket::before {
+  content: "\f846";
+}
+
+.bi-stripe::before {
+  content: "\f847";
+}
+
+.bi-subscript::before {
+  content: "\f848";
+}
+
+.bi-superscript::before {
+  content: "\f849";
+}
+
+.bi-trello::before {
+  content: "\f84a";
+}
+
+.bi-envelope-at-fill::before {
+  content: "\f84b";
+}
+
+.bi-envelope-at::before {
+  content: "\f84c";
+}
+
+.bi-regex::before {
+  content: "\f84d";
+}
+
+.bi-text-wrap::before {
+  content: "\f84e";
+}
+
+.bi-sign-dead-end-fill::before {
+  content: "\f84f";
+}
+
+.bi-sign-dead-end::before {
+  content: "\f850";
+}
+
+.bi-sign-do-not-enter-fill::before {
+  content: "\f851";
+}
+
+.bi-sign-do-not-enter::before {
+  content: "\f852";
+}
+
+.bi-sign-intersection-fill::before {
+  content: "\f853";
+}
+
+.bi-sign-intersection-side-fill::before {
+  content: "\f854";
+}
+
+.bi-sign-intersection-side::before {
+  content: "\f855";
+}
+
+.bi-sign-intersection-t-fill::before {
+  content: "\f856";
+}
+
+.bi-sign-intersection-t::before {
+  content: "\f857";
+}
+
+.bi-sign-intersection-y-fill::before {
+  content: "\f858";
+}
+
+.bi-sign-intersection-y::before {
+  content: "\f859";
+}
+
+.bi-sign-intersection::before {
+  content: "\f85a";
+}
+
+.bi-sign-merge-left-fill::before {
+  content: "\f85b";
+}
+
+.bi-sign-merge-left::before {
+  content: "\f85c";
+}
+
+.bi-sign-merge-right-fill::before {
+  content: "\f85d";
+}
+
+.bi-sign-merge-right::before {
+  content: "\f85e";
+}
+
+.bi-sign-no-left-turn-fill::before {
+  content: "\f85f";
+}
+
+.bi-sign-no-left-turn::before {
+  content: "\f860";
+}
+
+.bi-sign-no-parking-fill::before {
+  content: "\f861";
+}
+
+.bi-sign-no-parking::before {
+  content: "\f862";
+}
+
+.bi-sign-no-right-turn-fill::before {
+  content: "\f863";
+}
+
+.bi-sign-no-right-turn::before {
+  content: "\f864";
+}
+
+.bi-sign-railroad-fill::before {
+  content: "\f865";
+}
+
+.bi-sign-railroad::before {
+  content: "\f866";
+}
+
+.bi-building-add::before {
+  content: "\f867";
+}
+
+.bi-building-check::before {
+  content: "\f868";
+}
+
+.bi-building-dash::before {
+  content: "\f869";
+}
+
+.bi-building-down::before {
+  content: "\f86a";
+}
+
+.bi-building-exclamation::before {
+  content: "\f86b";
+}
+
+.bi-building-fill-add::before {
+  content: "\f86c";
+}
+
+.bi-building-fill-check::before {
+  content: "\f86d";
+}
+
+.bi-building-fill-dash::before {
+  content: "\f86e";
+}
+
+.bi-building-fill-down::before {
+  content: "\f86f";
+}
+
+.bi-building-fill-exclamation::before {
+  content: "\f870";
+}
+
+.bi-building-fill-gear::before {
+  content: "\f871";
+}
+
+.bi-building-fill-lock::before {
+  content: "\f872";
+}
+
+.bi-building-fill-slash::before {
+  content: "\f873";
+}
+
+.bi-building-fill-up::before {
+  content: "\f874";
+}
+
+.bi-building-fill-x::before {
+  content: "\f875";
+}
+
+.bi-building-fill::before {
+  content: "\f876";
+}
+
+.bi-building-gear::before {
+  content: "\f877";
+}
+
+.bi-building-lock::before {
+  content: "\f878";
+}
+
+.bi-building-slash::before {
+  content: "\f879";
+}
+
+.bi-building-up::before {
+  content: "\f87a";
+}
+
+.bi-building-x::before {
+  content: "\f87b";
+}
+
+.bi-buildings-fill::before {
+  content: "\f87c";
+}
+
+.bi-buildings::before {
+  content: "\f87d";
+}
+
+.bi-bus-front-fill::before {
+  content: "\f87e";
+}
+
+.bi-bus-front::before {
+  content: "\f87f";
+}
+
+.bi-ev-front-fill::before {
+  content: "\f880";
+}
+
+.bi-ev-front::before {
+  content: "\f881";
+}
+
+.bi-globe-americas::before {
+  content: "\f882";
+}
+
+.bi-globe-asia-australia::before {
+  content: "\f883";
+}
+
+.bi-globe-central-south-asia::before {
+  content: "\f884";
+}
+
+.bi-globe-europe-africa::before {
+  content: "\f885";
+}
+
+.bi-house-add-fill::before {
+  content: "\f886";
+}
+
+.bi-house-add::before {
+  content: "\f887";
+}
+
+.bi-house-check-fill::before {
+  content: "\f888";
+}
+
+.bi-house-check::before {
+  content: "\f889";
+}
+
+.bi-house-dash-fill::before {
+  content: "\f88a";
+}
+
+.bi-house-dash::before {
+  content: "\f88b";
+}
+
+.bi-house-down-fill::before {
+  content: "\f88c";
+}
+
+.bi-house-down::before {
+  content: "\f88d";
+}
+
+.bi-house-exclamation-fill::before {
+  content: "\f88e";
+}
+
+.bi-house-exclamation::before {
+  content: "\f88f";
+}
+
+.bi-house-gear-fill::before {
+  content: "\f890";
+}
+
+.bi-house-gear::before {
+  content: "\f891";
+}
+
+.bi-house-lock-fill::before {
+  content: "\f892";
+}
+
+.bi-house-lock::before {
+  content: "\f893";
+}
+
+.bi-house-slash-fill::before {
+  content: "\f894";
+}
+
+.bi-house-slash::before {
+  content: "\f895";
+}
+
+.bi-house-up-fill::before {
+  content: "\f896";
+}
+
+.bi-house-up::before {
+  content: "\f897";
+}
+
+.bi-house-x-fill::before {
+  content: "\f898";
+}
+
+.bi-house-x::before {
+  content: "\f899";
+}
+
+.bi-person-add::before {
+  content: "\f89a";
+}
+
+.bi-person-down::before {
+  content: "\f89b";
+}
+
+.bi-person-exclamation::before {
+  content: "\f89c";
+}
+
+.bi-person-fill-add::before {
+  content: "\f89d";
+}
+
+.bi-person-fill-check::before {
+  content: "\f89e";
+}
+
+.bi-person-fill-dash::before {
+  content: "\f89f";
+}
+
+.bi-person-fill-down::before {
+  content: "\f8a0";
+}
+
+.bi-person-fill-exclamation::before {
+  content: "\f8a1";
+}
+
+.bi-person-fill-gear::before {
+  content: "\f8a2";
+}
+
+.bi-person-fill-lock::before {
+  content: "\f8a3";
+}
+
+.bi-person-fill-slash::before {
+  content: "\f8a4";
+}
+
+.bi-person-fill-up::before {
+  content: "\f8a5";
+}
+
+.bi-person-fill-x::before {
+  content: "\f8a6";
+}
+
+.bi-person-gear::before {
+  content: "\f8a7";
+}
+
+.bi-person-lock::before {
+  content: "\f8a8";
+}
+
+.bi-person-slash::before {
+  content: "\f8a9";
+}
+
+.bi-person-up::before {
+  content: "\f8aa";
+}
+
+.bi-scooter::before {
+  content: "\f8ab";
+}
+
+.bi-taxi-front-fill::before {
+  content: "\f8ac";
+}
+
+.bi-taxi-front::before {
+  content: "\f8ad";
+}
+
+.bi-amd::before {
+  content: "\f8ae";
+}
+
+.bi-database-add::before {
+  content: "\f8af";
+}
+
+.bi-database-check::before {
+  content: "\f8b0";
+}
+
+.bi-database-dash::before {
+  content: "\f8b1";
+}
+
+.bi-database-down::before {
+  content: "\f8b2";
+}
+
+.bi-database-exclamation::before {
+  content: "\f8b3";
+}
+
+.bi-database-fill-add::before {
+  content: "\f8b4";
+}
+
+.bi-database-fill-check::before {
+  content: "\f8b5";
+}
+
+.bi-database-fill-dash::before {
+  content: "\f8b6";
+}
+
+.bi-database-fill-down::before {
+  content: "\f8b7";
+}
+
+.bi-database-fill-exclamation::before {
+  content: "\f8b8";
+}
+
+.bi-database-fill-gear::before {
+  content: "\f8b9";
+}
+
+.bi-database-fill-lock::before {
+  content: "\f8ba";
+}
+
+.bi-database-fill-slash::before {
+  content: "\f8bb";
+}
+
+.bi-database-fill-up::before {
+  content: "\f8bc";
+}
+
+.bi-database-fill-x::before {
+  content: "\f8bd";
+}
+
+.bi-database-fill::before {
+  content: "\f8be";
+}
+
+.bi-database-gear::before {
+  content: "\f8bf";
+}
+
+.bi-database-lock::before {
+  content: "\f8c0";
+}
+
+.bi-database-slash::before {
+  content: "\f8c1";
+}
+
+.bi-database-up::before {
+  content: "\f8c2";
+}
+
+.bi-database-x::before {
+  content: "\f8c3";
+}
+
+.bi-database::before {
+  content: "\f8c4";
+}
+
+.bi-houses-fill::before {
+  content: "\f8c5";
+}
+
+.bi-houses::before {
+  content: "\f8c6";
+}
+
+.bi-nvidia::before {
+  content: "\f8c7";
+}
+
+.bi-person-vcard-fill::before {
+  content: "\f8c8";
+}
+
+.bi-person-vcard::before {
+  content: "\f8c9";
+}
+
+.bi-sina-weibo::before {
+  content: "\f8ca";
+}
+
+.bi-tencent-qq::before {
+  content: "\f8cb";
+}
+
+.bi-wikipedia::before {
+  content: "\f8cc";
+}
+
 /*!
- * Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  * Copyright 2022 Fonticons, Inc.
  */
@@ -25580,6 +26042,10 @@ readers do not read off random characters that represent icons */
 
 .fa-v:before {
   content: "V";
+}
+
+.fa-bangladeshi-taka-sign:before {
+  content: "\e2e6";
 }
 
 .fa-bicycle:before {
@@ -28058,10 +28524,6 @@ readers do not read off random characters that represent icons */
   content: "\f068";
 }
 
-.fa-child-rifle:before {
-  content: "\e4e0";
-}
-
 .fa-chess:before {
   content: "\f439";
 }
@@ -29078,6 +29540,10 @@ readers do not read off random characters that represent icons */
   content: "\f14d";
 }
 
+.fa-child-combatant:before, .fa-child-rifle:before {
+  content: "\e4e0";
+}
+
 .fa-gun:before {
   content: "\e19b";
 }
@@ -29244,6 +29710,10 @@ readers do not read off random characters that represent icons */
 
 .fa-hand-lizard:before {
   content: "\f258";
+}
+
+.fa-notdef:before {
+  content: "\e1fe";
 }
 
 .fa-disease:before {
@@ -32491,9 +32961,9 @@ i[class^=fonticon-]:before, i[class*=" fonticon-"]:before {
   --kt-highlight-btn-bg: #2d2d5e;
   --kt-highlight-btn-bg-hover: #2d2d5e;
   --kt-highlight-btn-color: rgba(255, 255, 255, 0.75);
-  --kt-highlight-btn-color-hover: #3E97FF;
+  --kt-highlight-btn-color-hover: #009ef7;
   --kt-highlight-scrollbar-color: #323268;
-  --kt-highlight-scrollbar-color: #373773;
+  --kt-highlight-scrollbar-color-hover: #373773;
 }
 
 [data-theme=dark] {
@@ -32502,7 +32972,7 @@ i[class^=fonticon-]:before, i[class*=" fonticon-"]:before {
   --kt-highlight-btn-bg: #27273d;
   --kt-highlight-btn-bg-hover: #27273d;
   --kt-highlight-btn-color: rgba(255, 255, 255, 0.75);
-  --kt-highlight-btn-color-hover: #3E97FF;
+  --kt-highlight-btn-color-hover: #009ef7;
   --kt-highlight-scrollbar-color: #2d2d46;
   --kt-highlight-scrollbar-color-hover: #333350;
 }
@@ -32597,11 +33067,23 @@ i[class^=fonticon-]:before, i[class*=" fonticon-"]:before {
   height: auto;
   outline: none !important;
 }
-.select2-container--bootstrap5.select2-container--focus .form-select-solid, .select2-container--bootstrap5.select2-container--open .form-select-solid {
+.select2-container--bootstrap5.select2-container--focus:not(.select2-container--disabled) .form-select-solid, .select2-container--bootstrap5.select2-container--open:not(.select2-container--disabled) .form-select-solid {
   background-color: var(--kt-input-solid-bg-focus);
 }
-.select2-container--bootstrap5.select2-container--focus .form-select:not(.form-select-solid):not(.form-select-transparent), .select2-container--bootstrap5.select2-container--open .form-select:not(.form-select-solid):not(.form-select-transparent) {
+.select2-container--bootstrap5.select2-container--focus:not(.select2-container--disabled) .form-select:not(.form-select-solid):not(.form-select-transparent), .select2-container--bootstrap5.select2-container--open:not(.select2-container--disabled) .form-select:not(.form-select-solid):not(.form-select-transparent) {
   border-color: var(--kt-input-focus-border-color);
+}
+.select2-container--bootstrap5.select2-container--disabled .form-select {
+  background-color: var(--kt-form-select-disabled-bg);
+  border-color: var(--kt-form-select-disabled-border-color);
+}
+.select2-container--bootstrap5.select2-container--disabled .form-select .select2-selection__rendered,
+.select2-container--bootstrap5.select2-container--disabled .form-select .select2-selection__placeholder {
+  color: var(--kt-form-select-disabled-color) !important;
+}
+.select2-container--bootstrap5.select2-container--disabled .form-select.form-select-transparent {
+  background-color: transparent;
+  border-color: transparent;
 }
 .select2-container--bootstrap5 .select2-search.select2-search--inline .select2-search__field {
   color: var(--kt-input-color);
@@ -32647,7 +33129,7 @@ i[class^=fonticon-]:before, i[class*=" fonticon-"]:before {
   color: var(--kt-input-color);
 }
 .select2-container--bootstrap5 .select2-selection--single .select2-selection__placeholder {
-  color: #A1A5B7;
+  color: var(--kt-input-placeholder-color);
 }
 .select2-container--bootstrap5 .select2-selection--single.form-select-solid .select2-selection__rendered {
   color: var(--kt-input-solid-color);
@@ -33786,9 +34268,9 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th.dtr-control:before
   mask-position: center;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
-  background-color: #3E97FF;
-  -webkit-mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3e%3crect opacity='0.3' x='2' y='2' width='20' height='20' rx='5' fill='%233E97FF'/%3e%3crect x='6.0104' y='10.9247' width='12' height='2' rx='1' fill='%233E97FF'/%3e%3c/svg%3e");
-  mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3e%3crect opacity='0.3' x='2' y='2' width='20' height='20' rx='5' fill='%233E97FF'/%3e%3crect x='6.0104' y='10.9247' width='12' height='2' rx='1' fill='%233E97FF'/%3e%3c/svg%3e");
+  background-color: #009ef7;
+  -webkit-mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3e%3crect opacity='0.3' x='2' y='2' width='20' height='20' rx='5' fill='%23009ef7'/%3e%3crect x='6.0104' y='10.9247' width='12' height='2' rx='1' fill='%23009ef7'/%3e%3c/svg%3e");
+  mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3e%3crect opacity='0.3' x='2' y='2' width='20' height='20' rx='5' fill='%23009ef7'/%3e%3crect x='6.0104' y='10.9247' width='12' height='2' rx='1' fill='%23009ef7'/%3e%3c/svg%3e");
 }
 
 table.dataTable > tbody > tr.child span.dtr-title {

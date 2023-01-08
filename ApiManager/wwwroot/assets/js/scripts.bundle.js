@@ -267,6 +267,10 @@ var KTApp = function () {
     }
 
     var createAutosize = function () {
+        if (typeof autosize === 'undefined') {
+            return;
+        }
+
         var inputs = [].slice.call(document.querySelectorAll('[data-kt-autosize="true"]'));
 
         inputs.map(function (input) {
@@ -281,6 +285,10 @@ var KTApp = function () {
     }
 
     var createCountUp = function () {
+        if (typeof countUp === 'undefined') {
+            return;
+        }
+
         var elements = [].slice.call(document.querySelectorAll('[data-kt-countup="true"]:not(.counted)'));
 
         elements.map(function (element) {
@@ -330,6 +338,10 @@ var KTApp = function () {
     }
 
     var createCountUpTabs = function () {
+        if (typeof countUp === 'undefined') {
+            return;
+        }
+
         if (countUpInitialized === false) {
             // Initial call
             createCountUp();
@@ -354,6 +366,10 @@ var KTApp = function () {
     }
 
     var createTinySliders = function () {
+        if (typeof tns === 'undefined') {
+            return;
+        }
+
         // Init Slider
         var initSlider = function (el) {
             if (!el) {
@@ -436,25 +452,64 @@ var KTApp = function () {
             return;
         }
 
-        if (SmoothScroll) {
-            new SmoothScroll('a[data-kt-scroll-toggle][href*="#"]', {
-                speed: 1000,
-                speedAsDuration: true,
-                offset: function (anchor, toggle) {
-                    // Integer or Function returning an integer. How far to offset the scrolling anchor location in pixels
-                    // This example is a function, but you could do something as simple as `offset: 25`
-
-                    // An example returning different values based on whether the clicked link was in the header nav or not
-                    if (anchor.hasAttribute('data-kt-scroll-offset')) {
-                        var val = KTUtil.getResponsiveValue(anchor.getAttribute('data-kt-scroll-offset'));
-                        
-                        return val;
-                    } else {
-                        return 0;
-                    }
-                }
-            });
+        if (typeof SmoothScroll === 'undefined') {
+            return;
         }
+
+        new SmoothScroll('a[data-kt-scroll-toggle][href*="#"]', {
+            speed: 1000,
+            speedAsDuration: true,
+            offset: function (anchor, toggle) {
+                // Integer or Function returning an integer. How far to offset the scrolling anchor location in pixels
+                // This example is a function, but you could do something as simple as `offset: 25`
+
+                // An example returning different values based on whether the clicked link was in the header nav or not
+                if (anchor.hasAttribute('data-kt-scroll-offset')) {
+                    var val = KTUtil.getResponsiveValue(anchor.getAttribute('data-kt-scroll-offset'));
+                    
+                    return val;
+                } else {
+                    return 0;
+                }
+            }
+        });
+    }
+
+    var initCard = function() {
+        // Toggle Handler
+        KTUtil.on(document.body, '[data-kt-card-action="remove"]', 'click', function (e) {
+            e.preventDefault();
+            
+            const card = this.closest('.card');
+
+            if (!card) {
+                return;
+            }
+
+            const confirmMessage = this.getAttribute("data-kt-card-confirm-message");
+            const confirm = this.getAttribute("data-kt-card-confirm") === "true";
+
+            if (confirm) {
+                // Show message popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
+                Swal.fire({
+                    text: confirmMessage ? confirmMessage : "Are you sure to remove ?",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    confirmButtonText: "Confirm",
+                    denyButtonText: "Cancel",
+                    customClass: {
+                        confirmButton: "btn btn-primary",
+                        denyButton: "btn btn-danger"
+                    }
+                }).then(function (result) {
+                    if (result.isConfirmed) { 
+                        card.remove();
+                    }
+                });
+            } else {
+                card.remove();
+            }            
+        });        
     }
 
     var initCheck = function () {
@@ -516,7 +571,22 @@ var KTApp = function () {
         });
     }
 
-    var initPageLoader = function () {
+    var initLozad = function() {
+        // Check if lozad included
+        if (typeof lozad === 'undefined') {
+            return;
+        }
+
+		const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+        observer.observe();
+	}
+
+    var showPageLoading = function() {
+        document.body.classList.add('page-loading');
+        document.body.setAttribute('data-kt-app-page-loading', "on");
+    }
+
+    var hidePageLoading = function() {
         // CSS3 Transitions only after page load(.page-loading or .app-page-loading class added to body tag and remove with JS on page load)
         document.body.classList.remove('page-loading');
         document.body.removeAttribute('data-kt-app-page-loading');
@@ -524,13 +594,17 @@ var KTApp = function () {
 
     return {
         init: function () {
+            initLozad();
+
             initSmoothScroll();
+
+            initCard();
 
             initCheck();
 
             initBootstrapCollapse();
 
-            initBootstrapRotate();
+            initBootstrapRotate();            
 
             createBootstrapTooltips();
 
@@ -555,8 +629,12 @@ var KTApp = function () {
             initialized = true;
         },
 
-        initPageLoader: function () {
-            initPageLoader();
+        showPageLoading: function () {
+            showPageLoading();
+        },
+
+        hidePageLoading: function () {
+            hidePageLoading();
         },
 
         createBootstrapPopover: function(el, options) {
@@ -3250,9 +3328,11 @@ var KTPasswordMeter = function(element, options) {
 
     // Handlers
     var _handlers = function() {
-        the.inputElement.addEventListener('input', function() {
-            _check();
-        });
+        if (the.highlightElement) {
+            the.inputElement.addEventListener('input', function() {
+                _check();
+            });
+        }
 
         if (the.visibilityElement) {
             the.visibilityElement.addEventListener('click', function() {
@@ -4769,6 +4849,7 @@ var KTSticky = function(element, options) {
     var defaultOptions = {
         offset: 200,
         reverse: false,
+        release: null,
         animation: true,
         animationSpeed: '0.3s',
         animationClass: 'animation-slide-in-down'
@@ -4811,7 +4892,7 @@ var KTSticky = function(element, options) {
 
     var _scroll = function(e) {
         var offset = _getOption('offset');
-        var releaseOffset = _getOption('release-offset');
+        var release = _getOption('release');
         var reverse = _getOption('reverse');
         var st;
         var attrName;
@@ -4823,12 +4904,15 @@ var KTSticky = function(element, options) {
         }
 
         offset = parseInt(offset);
-        releaseOffset = releaseOffset ? parseInt(releaseOffset) : 0;
+        release = release ? document.querySelector(release) : null;
+
         st = KTUtil.getScrollTop();
         diff = document.documentElement.scrollHeight - window.innerHeight - KTUtil.getScrollTop();
+        
+        var proceed = (!release || (release.offsetTop - release.clientHeight) > st);
 
         if ( reverse === true ) {  // Release on reverse scroll mode
-            if ( st > offset && (releaseOffset === 0 || releaseOffset < diff)) {
+            if ( st > offset && proceed ) {
                 if ( document.body.hasAttribute(the.attributeName) === false) {
                     
                     if (_enable() === false) {
@@ -4861,7 +4945,7 @@ var KTSticky = function(element, options) {
 
             the.lastScrollTop = st;
         } else { // Classic scroll mode
-            if ( st > offset && (releaseOffset === 0 || releaseOffset < diff)) {
+            if ( st > offset && proceed ) {
                 if ( document.body.hasAttribute(the.attributeName) === false) {
                     
                     if (_enable() === false) {
@@ -4892,8 +4976,8 @@ var KTSticky = function(element, options) {
             }
         }      
 
-        if (releaseOffset > 0) {
-            if ( diff < releaseOffset ) {
+        if (release) {
+            if ( release.offsetTop - release.clientHeight > st ) {
                 the.element.setAttribute('data-kt-sticky-released', 'true');
             } else {
                 the.element.removeAttribute('data-kt-sticky-released');
@@ -7109,6 +7193,22 @@ var KTUtil = function() {
             );
         },
 
+        isPartiallyInViewport: function(element) {        
+            let x = element.getBoundingClientRect().left;
+            let y = element.getBoundingClientRect().top;
+            let ww = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            let hw = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+            let w = element.clientWidth;
+            let h = element.clientHeight;
+
+            return (
+                (y < hw &&
+                y + h > 0) &&
+                (x < ww &&
+                x + w > 0)
+            );
+        },
+
         onDOMContentLoaded: function(callback) {
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', callback);
@@ -7156,7 +7256,7 @@ var KTComponents = function () {
 			KTImageInput.init();
 			KTPasswordMeter.init();	
         }
-    }
+    }	
 }();
 
 // On document ready
@@ -7170,7 +7270,7 @@ if (document.readyState === "loading") {
 
  // Init page loader
 window.addEventListener("load", function() {
-    KTApp.initPageLoader();
+    KTApp.hidePageLoading();
 });
 
 // Declare KTApp for Webpack support
@@ -7587,7 +7687,7 @@ var KTAppSidebar = function () {
 	   	var toggleObj = KTToggle.getInstance(toggle);
 	   	var headerMenuObj = KTMenu.getInstance(headerMenu);
 
-		if ( toggleObj === null || headerMenuObj === null ) {
+		if ( toggleObj === null) {
 			return;
 		}
 
@@ -7890,3 +7990,77 @@ KTUtil.onDOMContentLoaded(function () {
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = KTThemeMode;
 }
+"use strict";
+
+// Class definition
+var KTLayoutToolbar = function () {
+    // Private variables
+    var toolbar;
+
+    // Private functions
+    var initForm = function () {
+        var rangeSlider = document.querySelector("#kt_app_toolbar_slider");
+        var rangeSliderValueElement = document.querySelector("#kt_app_toolbar_slider_value");
+
+        if (!rangeSlider) {
+            return;
+        }
+
+        noUiSlider.create(rangeSlider, {
+            start: [5],
+            connect: [true, false],
+            step: 1,
+            format: wNumb({
+                decimals: 1
+            }),
+            range: {
+                min: [1],
+                max: [10]
+            }
+        });
+
+        rangeSlider.noUiSlider.on("update", function (values, handle) {
+            rangeSliderValueElement.innerHTML = values[handle];
+        });
+
+        var handle = rangeSlider.querySelector(".noUi-handle");
+
+        handle.setAttribute("tabindex", 0);
+
+        handle.addEventListener("click", function () {
+            this.focus();
+        });
+
+        handle.addEventListener("keydown", function (event) {
+            var value = Number(rangeSlider.noUiSlider.get());
+
+            switch (event.which) {
+                case 37:
+                    rangeSlider.noUiSlider.set(value - 1);
+                    break;
+                case 39:
+                    rangeSlider.noUiSlider.set(value + 1);
+                    break;
+            }
+        });
+    }
+
+    // Public methods
+    return {
+        init: function () {
+            // Elements
+            toolbar = document.querySelector('#kt_app_toolbar');
+
+            if (!toolbar) {
+                return;
+            }
+
+            initForm();
+        }
+    };
+}();
+
+// On document ready
+KTUtil.onDOMContentLoaded(function () {
+    KTLayoutToolbar.init();
+});

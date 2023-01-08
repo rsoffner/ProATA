@@ -7,11 +7,11 @@ namespace ApiManager.Controllers
 {
     public class LogController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<LogController> _logger;
         private readonly IUserRepository _userRepository;
         private readonly ITaskRepository _taskRepository;
 
-        public LogController(ILogger<HomeController> logger, IUserRepository userRepository, ITaskRepository taskRepository)
+        public LogController(ILogger<LogController> logger, IUserRepository userRepository, ITaskRepository taskRepository)
         {
             _logger = logger;
             _userRepository = userRepository;

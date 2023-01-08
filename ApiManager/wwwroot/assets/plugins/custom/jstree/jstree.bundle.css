@@ -1190,7 +1190,7 @@
     background-image: url("images/jstree/40px.png");
   }
   .jstree-default-responsive .jstree-node,
-.jstree-default-responsive .jstree-leaf > .jstree-ocl {
+  .jstree-default-responsive .jstree-leaf > .jstree-ocl {
     background: transparent;
   }
   .jstree-default-responsive .jstree-node {
@@ -1205,7 +1205,7 @@
     height: 40px;
   }
   .jstree-default-responsive .jstree-icon,
-.jstree-default-responsive .jstree-icon:empty {
+  .jstree-default-responsive .jstree-icon:empty {
     width: 40px;
     height: 40px;
     line-height: 40px;
@@ -1222,12 +1222,12 @@
     margin-right: 0;
   }
   .jstree-default-responsive .jstree-ocl,
-.jstree-default-responsive .jstree-themeicon,
-.jstree-default-responsive .jstree-checkbox {
+  .jstree-default-responsive .jstree-themeicon,
+  .jstree-default-responsive .jstree-checkbox {
     background-size: 120px 240px;
   }
   .jstree-default-responsive .jstree-leaf > .jstree-ocl,
-.jstree-default-responsive.jstree-rtl .jstree-leaf > .jstree-ocl {
+  .jstree-default-responsive.jstree-rtl .jstree-leaf > .jstree-ocl {
     background: transparent;
   }
   .jstree-default-responsive .jstree-open > .jstree-ocl {
@@ -1243,17 +1243,17 @@
     background-position: -40px -40px;
   }
   .jstree-default-responsive .jstree-checkbox,
-.jstree-default-responsive .jstree-checkbox:hover {
+  .jstree-default-responsive .jstree-checkbox:hover {
     background-position: -40px -80px;
   }
   .jstree-default-responsive.jstree-checkbox-selection .jstree-clicked > .jstree-checkbox,
-.jstree-default-responsive.jstree-checkbox-selection .jstree-clicked > .jstree-checkbox:hover,
-.jstree-default-responsive .jstree-checked > .jstree-checkbox,
-.jstree-default-responsive .jstree-checked > .jstree-checkbox:hover {
+  .jstree-default-responsive.jstree-checkbox-selection .jstree-clicked > .jstree-checkbox:hover,
+  .jstree-default-responsive .jstree-checked > .jstree-checkbox,
+  .jstree-default-responsive .jstree-checked > .jstree-checkbox:hover {
     background-position: 0 -80px;
   }
   .jstree-default-responsive .jstree-anchor > .jstree-undetermined,
-.jstree-default-responsive .jstree-anchor > .jstree-undetermined:hover {
+  .jstree-default-responsive .jstree-anchor > .jstree-undetermined:hover {
     background-position: 0 -120px;
   }
   .jstree-default-responsive .jstree-anchor {
@@ -1287,10 +1287,10 @@
     box-shadow: none;
   }
   .jstree-default-responsive .jstree-node,
-.jstree-default-responsive .jstree-icon,
-.jstree-default-responsive .jstree-node > .jstree-ocl,
-.jstree-default-responsive .jstree-themeicon,
-.jstree-default-responsive .jstree-checkbox {
+  .jstree-default-responsive .jstree-icon,
+  .jstree-default-responsive .jstree-node > .jstree-ocl,
+  .jstree-default-responsive .jstree-themeicon,
+  .jstree-default-responsive .jstree-checkbox {
     background-image: url("images/jstree/40px.png");
     background-size: 120px 240px;
   }

@@ -711,13 +711,13 @@
 }
 @media (min-device-width: 700px) {
   .tinymce-mobile-outer-container,
-.tinymce-mobile-outer-container input {
+  .tinymce-mobile-outer-container input {
     font-size: 25px;
   }
 }
 @media (max-device-width: 700px) {
   .tinymce-mobile-outer-container,
-.tinymce-mobile-outer-container input {
+  .tinymce-mobile-outer-container input {
     font-size: 18px;
   }
 }

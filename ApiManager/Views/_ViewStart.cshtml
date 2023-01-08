@@ -1,3 +1,6 @@
-﻿@{
-    Layout = "_Layout";
+﻿@using ApiManager._keenthemes.libs
+@inject IKTTheme KTTheme;
+
+@{
+    Layout = KTTheme.getView("DefaultLightHeader.cshtml");
 }
