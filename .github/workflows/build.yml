@@ -5,9 +5,9 @@ name: Build and Package ProATA Packages
 
 on:
   push:
-    branches: [ "removed_unrelated_projects" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "removed_unrelated_projects" ]
+    branches: [ "master" ]
 
 jobs:
   build:
