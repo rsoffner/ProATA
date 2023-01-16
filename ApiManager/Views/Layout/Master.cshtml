@@ -1,3 +1,6 @@
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration Configuration;
+
 <!DOCTYPE html>
 <html @Html.Raw(KTTheme.printHtmlAttributes("html"))>
 <!--begin::Head-->
@@ -46,6 +49,12 @@
     <partial name="~/Views/Partials/ThemeMode/_Init.cshtml"></partial>
 
     @RenderBody()
+
+    <!--begin::Gloval javascript variables-->
+    <script>
+        const graphUrl = '@Configuration.GetSection("AppSettings").GetSection("EndpointUrl").Value';
+    </script>
+    <!--end::Global javascript variables-->
 
     <!--begin::Global Javascript(mandatory)-->
     @foreach (string file in KTTheme.getGlobalAssets("Js"))

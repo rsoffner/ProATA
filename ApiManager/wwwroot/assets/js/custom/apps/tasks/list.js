@@ -41,7 +41,7 @@ var TasksDatatable = function () {
                 className: 'row-selected'
             },
             ajax: {
-                url: 'https://localhost:7173/graphql',
+                url: graphUrl,
                 type: 'POST',
                 contentType: 'application/json',
                 data: function (d) {
@@ -191,7 +191,7 @@ var TasksDatatable = function () {
                 className: 'row-selected'
             },
             ajax: {
-                url: 'https://localhost:7173/graphql',
+                url: graphUrl,
                 type: 'POST',
                 contentType: 'application/json',
                 data: function (d) {
