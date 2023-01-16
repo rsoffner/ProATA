@@ -1,4 +1,5 @@
-﻿using ApiManager.Models;
+﻿using ApiManager._keenthemes.libs;
+using ApiManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
@@ -10,11 +11,13 @@ namespace ApiManager.Controllers
     {
         private readonly ILogger<MonitorController> _logger;
         private readonly ISchedulerRepository _schedulerRepository;
+		private readonly IKTTheme _theme;
 
-        public MonitorController(ILogger<MonitorController> logger, ISchedulerRepository schedulerRepository)
-        {
+		public MonitorController(ILogger<MonitorController> logger, ISchedulerRepository schedulerRepository, IKTTheme theme)
+		{
             _logger = logger;
             _schedulerRepository = schedulerRepository;
+            _theme = theme;
         }
 
         public IActionResult Index()
@@ -31,15 +34,10 @@ namespace ApiManager.Controllers
                 });
             }
 
-            return View(new MonitorViewModel
+            return View(_theme.getPageView("Monitor", "Index.cshtml"), new MonitorViewModel
             {
                 Schedulers = schedulers
             });
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

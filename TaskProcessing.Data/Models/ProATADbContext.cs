@@ -17,9 +17,6 @@ public partial class ProATADbContext : DbContext
     }
 
     public virtual DbSet<Schedule> Schedules { get; set; }
-    public virtual DbSet<DailySchedule> DailySchedules { get; set; }
-    public virtual DbSet<TimeSchedule> TimeSchedules { get; set; }
-    public virtual DbSet<WeeklySchedule> WeeklySchedules { get; set; }
     public virtual DbSet<Scheduler> Schedulers { get; set; }
     public virtual DbSet<APITask> Tasks { get; set; }
 
@@ -27,7 +24,8 @@ public partial class ProATADbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new ScheduleEntityTypeConfiguration());
+        modelBuilder.Entity<Schedule>().ToTable("Schedules")
+            .Ignore(x => x.Events);
 
         modelBuilder.Entity<Scheduler>().ToTable("Schedulers")
             .Ignore(x => x.Events);

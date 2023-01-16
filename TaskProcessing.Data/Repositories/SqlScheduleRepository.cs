@@ -14,6 +14,13 @@ namespace TaskProcessing.Data.Repositories
         {
             _context = context;
         }
+
+        public void AddSchedule(Schedule schedule)
+        {
+            _context.Schedules.Add(schedule);
+            _context.SaveChanges();
+        }
+
         public DatabaseResponse<Schedule> GetSchedulesByTask(Guid taskId, int page, int pageSize)
         {
             var count = _context.Schedules.Where(x => x.Task.Id == taskId).Count();

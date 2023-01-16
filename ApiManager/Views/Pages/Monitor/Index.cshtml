@@ -2,10 +2,9 @@
 
 @{
     ViewData["Title"] = "Monitor";
-}
 
-@section styles {
-        <link rel="stylesheet" href="~/assets/plugins/custom/datatables/datatables.bundle.css" />
+    KTTheme.addVendor("signalr");
+    KTTheme.addJavascriptFile("js/custom/apps/monitor/list.js");
 }
 
 <!--begin::Card-->
@@ -41,11 +40,3 @@
     <!--end::Card body-->
 </div>
 <!--end::Card-->
-
-@section scripts{
-    <!-- Required datatable js -->
-    <script src="~/assets/plugins/custom/datatables/datatables.bundle.js"></script>
-
-    <script src="~/assets//plugins/custom/signalr/signalr.bundle.js"></script>
-    <script src="~/assets/js/custom/apps/monitor/list.js"></script>
-}

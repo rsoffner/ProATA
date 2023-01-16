@@ -572,6 +572,16 @@ const gulpConfig = {
                         styles: "{$config.dist}/plugins/custom/cookiealert/cookiealert.bundle.css",
                         scripts: "{$config.dist}/plugins/custom/cookiealert/cookiealert.bundle.js",
                     }
+                },
+                signalr: {
+                    src: {
+                        scripts: [
+                            "{$config.path.node_modules}/@microsoft/signalr/dist/browser/signalr.js"
+                        ]
+                    },
+                    dist: {
+                        "scripts": "{$config.dist}/plugins/custom/signalr/signalr.bundle.js"
+                    }
                 }
             }
         },

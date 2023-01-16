@@ -19,6 +19,7 @@ builder.Services.AddCors();
 
 builder.Services.AddScoped<ITaskRepository, SqlTaskRepository>();
 builder.Services.AddScoped<ISchedulerRepository, SqlSchedulerRepository>();
+builder.Services.AddScoped<IScheduleRepository, SqlScheduleRepository>();
 
 builder.Services.AddGraphQLServer().AddQueryType<Query>().AddMutationType<Mutation>();
 

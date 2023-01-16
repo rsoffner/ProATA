@@ -9,6 +9,8 @@ namespace ApiManager.Models
         public bool Enabled { get; set; }
         public Guid SchedulerId { get; set; }
 
+        public ScheduleViewModel Schedule { get; set; }
+
         public IList<SelectListItem>? Schedulers { get; set; }
     }
 }

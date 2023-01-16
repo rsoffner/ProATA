@@ -6,6 +6,6 @@
         /// <summary>
         /// Sets or retrieves the interval between the days in the schedule.
         /// </summary>
-        public short DaysInterval { get; set; }
+        public int DaysInterval { get; set; }
     }
 }

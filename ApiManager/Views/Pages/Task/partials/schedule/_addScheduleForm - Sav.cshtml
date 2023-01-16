@@ -1,0 +1,95 @@
+﻿@using ProATA.SharedKernel.Enums;
+@model ApiManager.Models.TaskViewModel
+
+<input asp-for="Schedule.TaskId" type="hidden" />
+
+<!--begin::settingsSection-->
+<div data-schedule-form-section="settings">
+    <div class="fv-row mb-7">
+        <label asp-for="Schedule.Type" class="fw-semibold fs-6 mb-2">Schedule Type</label>
+        <select class="form-select" asp-for="Schedule.Type" asp-items="Html.GetEnumSelectList<ScheduleType>()"></select>
+    </div>
+
+    <div class="fv-row mb-7">
+        <label asp-for="Schedule.StartBoundery" class="required fw-semibold fs-6 mb-2"></label>
+        <input asp-for="Schedule.StartBoundery" class="form-control" type="datetime-local">
+    </div>
+</div>
+<!--end::settingsSection-->
+
+<!--begin::scheduleSection-->
+<div data-schedule-form-section="schedule" class="mb-2 d-none">
+    <!--begin::recurrenceSection-->
+    <div data-schedule-form-section="recurrence" class="mb-2 d-none">
+        <div class="row mb-2">
+            <label for="Start" class="fw-semibold col-sm-2">Recur every:</label>
+            <div class="col-sm-1">
+                <input asp-for="Schedule.Interval" class="form-control" type="number" />
+            </div>
+            <div class="col-sm-1">
+                <span data-schedule-form="recurrenceType">weeks on:</span>
+            </div>
+        </div>
+    </div>
+    <!--end::recurrenceSection-->
+
+    <!--begin::daysSection-->
+    <div data-schedule-form-section="days" class="mb-2 d-none">
+        <div class="form-check form-check-inline">
+            <input type="checkbox" name="Days" id="Days1" value="2" checked>
+            <label class="form-check-label" for="Days1">Monday</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" name="Days" id="Days2" value="4" checked>
+            <label class="form-check-label" for="Days2">Tuesday</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" name="Days" id="Days3" value="8" checked>
+            <label class="form-check-label" for="Days3">Wednesday</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" name="Days" id="Days4" value="16" checked>
+            <label class="form-check-label" for="Days4">Thursday</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" name="Days" id="Days5" value="32" checked>
+            <label class="form-check-label" for="Days5">Friday</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" name="Days" id="Days6" value="64" checked>
+            <label class="form-check-label" for="Days6">Saturday</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="checkbox" name="Days" id="Days7" value="1" checked>
+            <label class="form-check-label" for="Days7">Sunday</label>
+        </div>
+    </div>
+    <!--end::daysSection-->
+</div>
+<!--end::scheduleSection-->
+
+<hr />
+
+<!--begin::advancedSectiom-->
+<div data-schedule-form-section="advanced">
+    <div class="row mb-2">
+        <div class="col-lg-1">
+            <input asp-for="Schedule.Repeat" class="form-check-input" type="checkbox" />
+        </div>
+        <div class="col-lg-3">
+            Repeat task every:
+        </div>
+        <div class="col-lg-2">
+            <input asp-for="Schedule.RepeatAmount" class="form-control" type="number" />
+        </div>
+        <div class="col-lg-2">
+            <select class="form-select" asp-for="Schedule.RepeatUnit" asp-items="Html.GetEnumSelectList<Unit>()"></select>
+        </div>
+    </div>
+
+    <div class="form-check form-switch form-check-custom form-check-solid">
+        <input asp-for="Schedule.Enabled" class="form-check-input" type="checkbox" />
+        <label class="form-check-label" asp-for="Schedule.Enabled">Enabled</label>
+    </div>
+</div>
+<!--end::advancedSection-->

@@ -9,6 +9,7 @@ using askProcessing.Core.Services.SignalProcessor;
 using TaskProcessing.Core.Repositories;
 using TaskProcessing.Data.Repositories;
 using ApiManager.Services.SignalProcessor;
+using ApiManager.Hubs;
 
 var appConfig = new ConfigurationBuilder()
 	.AddJsonFile("appsettings.json", false)
@@ -35,6 +36,8 @@ builder.Services.AddScoped<IScheduleRepository, SqlScheduleRepository>();
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<ILogService, LogService>();
 builder.Services.AddScoped<ISignalProcessorManager, SignalProcessorManager>();
+
+builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -113,6 +116,8 @@ app.MapControllerRoute(name: "error",
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Dashboards}/{action=Index}/{id?}");
+    pattern: "{controller=Monitor}/{action=Index}/{id?}");
+
+app.MapHub<MessageBrokerHub>("/messagebroker");
 
 app.Run();

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Azure;
+using Microsoft.Extensions.Options;
 using ProATA.Service.Models;
 using ProATA.SharedKernel;
 using System.Reactive.Concurrency;
@@ -32,11 +33,7 @@ namespace ProATA.Service
                         {
                             Id = schedule.Id,
                             Enabled = schedule.Enabled,
-                            StartBoundery = schedule.StartBoundery,
-                            EndBoundery = schedule.EndBoundery,
-                            ExecutionTimeLimit = schedule.ExecutionTimeLimit,
-                            Repeat = schedule.Repeat,
-                            Repetition = schedule.Repetition
+                            CronExpression = schedule.CronExpression
                         });
                     }
                     tasks.Add(new APITaskDto
@@ -75,11 +72,7 @@ namespace ProATA.Service
                         {
                             Id = schedule.Id,
                             Enabled = schedule.Enabled,
-                            StartBoundery = schedule.StartBoundery,
-                            EndBoundery = schedule.EndBoundery,
-                            ExecutionTimeLimit = schedule.ExecutionTimeLimit,
-                            Repeat = schedule.Repeat,
-                            Repetition = schedule.Repetition
+                            CronExpression = schedule.CronExpression,
                         });
                     }
                     tasks.Add(new APITaskDto
@@ -146,11 +139,7 @@ namespace ProATA.Service
                 {
                     Id = schedule.Id,
                     Enabled = schedule.Enabled,
-                    StartBoundery = schedule.StartBoundery,
-                    EndBoundery = schedule.EndBoundery,
-                    ExecutionTimeLimit = schedule.ExecutionTimeLimit,
-                    Repeat = schedule.Repeat,
-                    Repetition = schedule.Repetition
+                    CronExpression = schedule.CronExpression,
                 });
             }
 
@@ -166,27 +155,38 @@ namespace ProATA.Service
         // Schedule
         public DatabaseResponse<ScheduleDto> GetSchedulesByTask(DatatableOptions options, [Service] IScheduleRepository rep)
         {
-            var response = rep.GetSchedulesByTask((Guid)options.TaskId, options.Paginate.Page, options.Paginate.Limit);
-
             IList<ScheduleDto> schedules = new List<ScheduleDto>();
-            foreach (var item in response.Data)
-            {
-                schedules.Add(new ScheduleDto
-                {
-                    Id = item.Id,
-                    Enabled = item.Enabled,
-                    StartBoundery = item.StartBoundery,
-                    EndBoundery = item.EndBoundery,
-                    Type = item.GetType().Name
-                });
-            }
 
-            return new DatabaseResponse<ScheduleDto>
+            if (options.TaskId != Guid.Empty)
             {
-                Data = schedules,
-                RecordsTotal = response.RecordsTotal,
-                RecordsFiltered = response.RecordsFiltered,
-            };
+                var response = rep.GetSchedulesByTask((Guid)options.TaskId, options.Paginate.Page, options.Paginate.Limit);
+
+                foreach (var item in response.Data)
+                {
+                    schedules.Add(new ScheduleDto
+                    {
+                        Id = item.Id,
+                        Enabled = item.Enabled,
+                       CronExpression = item.CronExpression,
+                    });
+                }
+
+                return new DatabaseResponse<ScheduleDto>
+                {
+                    Data = schedules,
+                    RecordsTotal = response.RecordsTotal,
+                    RecordsFiltered = response.RecordsFiltered,
+                };
+            }
+            else
+            {
+                return new DatabaseResponse<ScheduleDto>
+                {
+                    Data = schedules,
+                    RecordsTotal = 0,
+                    RecordsFiltered = 0,
+                };
+            }
         }
             
     }
