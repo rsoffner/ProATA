@@ -31,8 +31,7 @@ namespace TaskProcessing.Data.Repositories
         public Scheduler GetByHostName(string hostName)
         {
             var scheduler = _context.Schedulers
-                .Include(x => x.Tasks).Single(x => x.HostName == hostName)
-                ;
+                .Include(x => x.Tasks).ThenInclude(x => x.Schedules).Single(x => x.HostName == hostName);
 
             return scheduler;  
         }

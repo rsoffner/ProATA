@@ -6,6 +6,8 @@ namespace TaskProcessing.Core.Models
     {
         public string CronExpression { get; set; }
 
+        public DateTime StartBoundery { get; set; }
+
         /// <summary>
         /// Gets or sets a Boolean value that indicates whether the schedule is enabled.
         /// </summary>

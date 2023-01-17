@@ -32,7 +32,8 @@ namespace ApiManager.Controllers.Api
                 Schedule schedule = new Schedule
                 {
                     CronExpression = data.Schedule.CronExpression,
-                    Enabled = data.Schedule.Enabled
+                    Enabled = data.Schedule.Enabled,
+                    StartBoundery = DateTime.Parse(data.Schedule.StartBoundery)
                 };
 
                 schedule.Task = task;

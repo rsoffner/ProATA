@@ -29,7 +29,7 @@ namespace TaskProcessor.WorkerServices
 
         public async Task DoWorkAsync(CancellationToken stoppingToken)
         {
-            _taskSchedulerManager.StartScheduler();
+            await _taskSchedulerManager.StartScheduler();
 
             await _signalProcessorManager.StartListening(async commandMessage =>
             {

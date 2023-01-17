@@ -9,6 +9,10 @@ namespace TaskProcessing.Data.Entities
 
         public virtual string CronExpression { get; set; }
 
+        public virtual DateTime StartBoundery { get; set; }
+
+        public string Description { get; set; }
+
         /// <summary>
         /// Gets or sets a Boolean value that indicates whether the schedule is enabled.
         /// </summary>

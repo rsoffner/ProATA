@@ -200,7 +200,7 @@ var TasksDatatable = function () {
                         schedulesByTask(options: $options) {
                             data {
                                 id
-                                cronExpression
+                                description
                                 enabled
                             }
                             recordsTotal
@@ -237,7 +237,7 @@ var TasksDatatable = function () {
                     data: 'id'
                 },
                 {
-                    data: 'cronExpression'
+                    data: 'description'
                 },
                 {
                     data: 'enabled'
@@ -256,29 +256,6 @@ var TasksDatatable = function () {
 							    <input class="form-check-input" type="checkbox" value="${row.id}" />
 							</div>
                         `
-                    }
-                },
-                {
-                    targets: 1,
-                    orderable: false,
-                    render: function (data, type, row) {
-                        var description = "";
-                        $.ajax({
-                            type: "POST",
-                            url: "https://www.freeformatter.com/quartz-cron2text",
-                            data: {
-                                "expression": row.cronExpression
-                            },
-                            dataType: 'json',
-                            success: function (response) {
-                                if (response && response.description) {
-                                   description = response.description;
-                                } else {
-                                    description = response.error;
-                                }
-                            }
-                        });
-                        return description;
                     }
                 },
                 {

@@ -167,7 +167,9 @@ namespace ProATA.Service
                     {
                         Id = item.Id,
                         Enabled = item.Enabled,
-                       CronExpression = item.CronExpression,
+                        CronExpression = item.CronExpression,
+                        Description = CronExpressionDescriptor.ExpressionDescriptor.GetDescription(item.CronExpression),
+                        StartBoundery = item.StartBoundery,
                     });
                 }
 

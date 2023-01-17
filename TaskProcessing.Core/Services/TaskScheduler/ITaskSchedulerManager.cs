@@ -5,6 +5,6 @@ namespace TaskProcessing.Core.Services.TaskScheduler
     public interface ITaskSchedulerManager
     {
         APITask GetTask(Guid taskId);
-        void StartScheduler();
+        Task StartScheduler();
     }
 }
