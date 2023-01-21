@@ -1,10 +1,5 @@
-﻿using Azure;
-using Microsoft.Extensions.Options;
-using ProATA.Service.Models;
-using ProATA.SharedKernel;
-using System.Reactive.Concurrency;
-using TaskProcessing.Core.Contracts;
-using TaskProcessing.Core.Models;
+﻿using ProATA.SharedKernel;
+using TaskProcessing.Core.Models.ValueObjects;
 using TaskProcessing.Core.Repositories;
 using TaskProcessing.Data.Entities;
 
@@ -14,7 +9,7 @@ namespace ProATA.Service
     {
         public DatabaseResponse<APITaskDto> GetTasks(DatatableOptions options, [Service] ITaskRepository rep)
         {
-            if (options.SchedulerId == Guid.Empty)
+            if (options.Filters[0].Value == Guid.Empty.ToString())
             {
                 var response = rep.GetTasks(options.Paginate.Page, options.Paginate.Limit);
                 IList<APITaskDto> tasks = new List<APITaskDto>();
@@ -55,7 +50,7 @@ namespace ProATA.Service
             }
             else
             {
-                var response = rep.GetTasksByScheduler((Guid)options.SchedulerId, options.Paginate.Page, options.Paginate.Limit);
+                var response = rep.GetTasksByScheduler(new Guid(options.Filters[0].Value), options.Paginate.Page, options.Paginate.Limit);
                 IList<APITaskDto> tasks = new List<APITaskDto>();
                 foreach (var item in response.Data)
                 {
@@ -157,9 +152,9 @@ namespace ProATA.Service
         {
             IList<ScheduleDto> schedules = new List<ScheduleDto>();
 
-            if (options.TaskId != Guid.Empty)
+            if (options.Filters[0].Value != Guid.Empty.ToString())
             {
-                var response = rep.GetSchedulesByTask((Guid)options.TaskId, options.Paginate.Page, options.Paginate.Limit);
+                var response = rep.GetSchedulesByTask(new Guid(options.Filters[0].Value), options.Paginate.Page, options.Paginate.Limit);
 
                 foreach (var item in response.Data)
                 {

@@ -1,8 +1,8 @@
-﻿using ProATA.SharedKernel.Interfaces;
+﻿using MediatR;
 
 namespace TaskProcessing.Core.Events
 {
-    public class TaskCreatedEvent : IDomainEvent
+    public class TaskCreatedEvent : INotification
     {
         public TaskCreatedEvent(Guid taskId, string title)
         {

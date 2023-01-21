@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ProATA.SharedKernel.Interfaces;
 using Quartz;
 using System.Globalization;
@@ -7,6 +8,7 @@ using TaskProcessing.Core.Interfaces;
 using TaskProcessing.Core.Models;
 using TaskProcessing.Core.Repositories;
 using TaskProcessing.Core.Services.TaskScheduler;
+using TaskProcessing.Data.Queries;
 
 namespace TaskProcessor.Services.TaskScheduler
 {
@@ -21,16 +23,16 @@ namespace TaskProcessor.Services.TaskScheduler
 
     public class TaskSchedulerManager : ITaskSchedulerManager
     {
-        private readonly ISchedulerRepository _schedulerRepository;
+        private readonly IMediator _mediator;
         private readonly ISchedulerFactory _schedulerFactory;
         private readonly IConfiguration _configuration;
         private IScheduler _scheduler;
         private readonly ILogger<TaskSchedulerManager> _logger;
         private readonly IList<APITask> _tasks;
 
-        public TaskSchedulerManager(ISchedulerRepository schedulerRepository, IConfiguration configuration, ISchedulerFactory schedulerFactory, ILogger<TaskSchedulerManager> logger)
+        public TaskSchedulerManager(IMediator mediator, IConfiguration configuration, ISchedulerFactory schedulerFactory, ILogger<TaskSchedulerManager> logger)
         {
-            _schedulerRepository = schedulerRepository;
+            _mediator = mediator;
             _schedulerFactory = schedulerFactory;
             _configuration = configuration;
 
@@ -45,7 +47,7 @@ namespace TaskProcessor.Services.TaskScheduler
 
         public async Task StartScheduler()
         {
-            var scheduler = _schedulerRepository.GetByHostName(_configuration["Scheduler:HostName"]);
+            var scheduler = await _mediator.Send(new GetSchedulerByHostnameQuery(_configuration["Scheduler:HostName"]));
 
             foreach (var task in scheduler.Tasks)
             {
@@ -63,7 +65,7 @@ namespace TaskProcessor.Services.TaskScheduler
                     }
                 }
                 task.CurrentState = new ReadyState(task);
-                task.Events = new List<IDomainEvent>();
+                task.Events = new List<INotification>();
 
                 _tasks.Add(task);
 

@@ -17,7 +17,7 @@ namespace TaskProcessing.Data.Repositories
 
         public APITask GetTask(Guid id)
         {
-            var task = _context.Tasks.Single(x => x.Id == id);
+            var task = _context.Tasks.Include(x => x.Scheduler).Include(x => x.Schedules).Single(x => x.Id == id);
 
             return task;
 

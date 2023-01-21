@@ -28,5 +28,7 @@ namespace ApiManager.Hubs
                 await _signalProcessorManager.PublishCommandMessage(new CommandMessage(scheduler.HostName, taskId, command));
             }
         }
+
+
     }
 }

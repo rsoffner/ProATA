@@ -41,45 +41,30 @@ var TasksDatatable = function () {
                 className: 'row-selected'
             },
             ajax: {
-                url: graphUrl,
+                url: apiUrl + '/task',
                 type: 'POST',
                 contentType: 'application/json',
                 data: function (d) {
-                    var gql = `
-                    query tasks($options: DatatableOptionsInput!) {
-                        tasks(options: $options) {
-                            data {
-                                id
-                                title
-                                enabled
+                    var options = {
+                        paginate: {
+                            page: (d.start / d.length) + 1,
+                            limit: d.length
+                        },
+                        filters: [
+                            {
+                                name: 'schedulerId',
+                                value: schedulerEl.value
                             }
-                            recordsTotal
-                            recordsFiltered
-                        }
-                    }
-                    `;
+                        ]                           
+                     };
 
-                    var query = {
-                        operationName: null,
-                        query: gql,
-                        variables: {
-                            options: {
-                                paginate: {
-                                    page: (d.start / d.length) + 1,
-                                    limit: d.length
-                                },
-                                schedulerId: schedulerEl.value
-                            }
-                        }
-                    }
-
-                    return JSON.stringify(query);
+                    return JSON.stringify(options);
                 },
                 dataSrc: function (json) {
 
-                    json.recordsTotal = json.data.tasks.recordsTotal;
-                    json.recordsFiltered = json.data.tasks.recordsFiltered;
-                    return json.data.tasks.data;
+                    json.recordsTotal = json.recordsTotal;
+                    json.recordsFiltered = json.recordsFiltered;
+                    return json.data;
                 }
             },
             columns: [
@@ -191,45 +176,30 @@ var TasksDatatable = function () {
                 className: 'row-selected'
             },
             ajax: {
-                url: graphUrl,
+                url: apiUrl + '/schedule/task',
                 type: 'POST',
                 contentType: 'application/json',
                 data: function (d) {
-                    var gql = `
-                    query schedulesByTask($options: DatatableOptionsInput!) {
-                        schedulesByTask(options: $options) {
-                            data {
-                                id
-                                description
-                                enabled
+                    var options = {
+                        paginate: {
+                            page: (d.start / d.length) + 1,
+                            limit: d.length
+                        },
+                        filters: [
+                            {
+                                name: 'taskId',
+                                value: taskId
                             }
-                            recordsTotal
-                            recordsFiltered
-                        }
-                    }
-                    `;
+                        ]                           
+                    };
 
-                    var query = {
-                        operationName: null,
-                        query: gql,
-                        variables: {
-                            options: {
-                                paginate: {
-                                    page: (d.start / d.length) + 1,
-                                    limit: d.length
-                                },
-                                taskId: taskId
-                            }
-                        }
-                    }
-
-                    return JSON.stringify(query);
+                    return JSON.stringify(options);
                 },
                 dataSrc: function (json) {
 
-                    json.recordsTotal = json.data.schedulesByTask.recordsTotal;
-                    json.recordsFiltered = json.data.schedulesByTask.recordsFiltered;
-                    return json.data.schedulesByTask.data;
+                    json.recordsTotal = json.recordsTotal;
+                    json.recordsFiltered = json.recordsFiltered;
+                    return json.data;
                 }
             },
             columns: [

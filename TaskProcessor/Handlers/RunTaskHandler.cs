@@ -1,12 +1,13 @@
-﻿using ProATA.SharedKernel.Interfaces;
-using TaskProcessing.Core.Contracts;
+﻿using MediatR;
+using TaskProcesser.Commands;
 using TaskProcessing.Core.Models;
+using TaskProcessing.Core.Models.ValueObjects;
 using TaskProcessing.Core.Repositories;
 using TaskProcessing.Core.Services.TaskProcessor;
 
-namespace TaskProcessing.Core.Handlers
+namespace TaskProcesser.Handlers
 {
-    public class RunTaskHandler : IHandleCommand<Tasks.V1.Run>
+    public class RunTaskHandler : IRequestHandler<RunTaskCommand, TaskResponse>
     {
         private readonly ITaskProcessorManager _taskProcessorManager;
         private readonly ITaskRepository _taskRepository;
@@ -16,12 +17,12 @@ namespace TaskProcessing.Core.Handlers
             _taskProcessorManager = taskProcessorManager;
             _taskRepository = taskRepository;
         }
-        
-        public async Task Handle(Tasks.V1.Run command)
-        {
-            APITask task =  _taskRepository.GetTask(command.Id);
 
-            await _taskProcessorManager.RunTask(task);
+        public async Task<TaskResponse> Handle(RunTaskCommand request, CancellationToken cancellationToken)
+        {
+            APITask task = _taskRepository.GetTask(request.TaskId);
+
+            return await _taskProcessorManager.RunTask(task);
         }
     }
 }

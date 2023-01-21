@@ -1,4 +1,5 @@
-﻿using ProATA.SharedKernel.Interfaces;
+﻿using MediatR;
+using ProATA.SharedKernel.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,7 +11,7 @@ namespace ProATA.SharedKernel
         public virtual TId Id { get; protected set; }
 
         [NotMapped]
-        public virtual ICollection<IDomainEvent> Events { get; set; }
+        public virtual ICollection<INotification> Events { get; set; }
 
         protected Entity(TId id)
         {
@@ -21,7 +22,7 @@ namespace ProATA.SharedKernel
 
             this.Id = id;
 
-            Events = new List<IDomainEvent>();
+            Events = new List<INotification>();
         }
 
         // EF requires an empty constructor

@@ -1,10 +1,7 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
-using TaskProcessing.Core.Interfaces;
-using TaskProcessing.Core.Models;
-using TaskProcessing.Core.Repositories;
+﻿using TaskProcessing.Core.Models;
 using TaskProcessing.Core.Services.TaskProcessor;
-using TaskProcessing.Data.Models;
+using System.Net;
+using TaskProcessing.Core.Models.ValueObjects;
 
 namespace TaskProcesser.Services.TaskProcessor
 {
@@ -17,10 +14,19 @@ namespace TaskProcesser.Services.TaskProcessor
             _configuration = configuration;
         }
 
-        public async Task RunTask(APITask task)
+        public async Task<TaskResponse> RunTask(APITask task)
         {
-            await task.Run();
-            await task.End();
+            try
+            {
+                await task.Run();
+                await task.End();
+
+                return new TaskResponse(HttpStatusCode.OK, $"Task {task.Title} was executed");
+            }
+            catch (Exception ex)
+            {
+                return new TaskResponse(HttpStatusCode.InternalServerError, $"Task {task.Title} throw an error: {ex.Message}");
+            }
         }
     }
 }

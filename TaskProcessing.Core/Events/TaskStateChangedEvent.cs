@@ -1,9 +1,9 @@
-﻿using ProATA.SharedKernel.Enums;
-using ProATA.SharedKernel.Interfaces;
+﻿using MediatR;
+using ProATA.SharedKernel.Enums;
 
 namespace TaskProcessing.Core.Events
 {
-    public class TaskStateChangedEvent : IDomainEvent
+    public class TaskStateChangedEvent : INotification
     {
         public Guid TaskId { get; private set; }
         public TaskState State { get; private set; }
